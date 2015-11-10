@@ -8,7 +8,7 @@ import arvore.comando.*;
 
 
 /*****  Terminais (tokens) *****/
-/*o tipo que eu estou mandando no lexer eu devo mandar aqui*/
+
 terminal String IDENTIFICADOR;
     
 terminal Object    OP_IGUAL;
@@ -57,28 +57,28 @@ terminal Object    KEY_PRINT;
 
 /***** Nao-terminais *****/
 
-non terminal program;
-non terminal decl_global;
-non terminal decl_variavel;
-non terminal lista_idents;
+non terminal 		program;
+non terminal 		decl_global;
+non terminal 		decl_variavel;
+non terminal 		lista_idents;
 non terminal 		resto_lista_idents;
-non terminal tipo;
-non terminal decl_funcao;
-non terminal assinatura;
-non terminal param_formais;
-non terminal resto_param_formais;
-non terminal bloco;
-non terminal lista_comandos;
+non terminal 		tipo;
+non terminal 		decl_funcao;
+non terminal 		assinatura;
+non terminal 		param_formais;
+non terminal 		resto_param_formais;
+non terminal 		bloco;
+non terminal 		lista_comandos;
 non terminal Comando comando;
-non terminal atribuicao;
-non terminal iteracao;
-non terminal Decisao  decisao;
-non terminal escrita;
-non terminal chamada_func_cmd;
-non terminal retorno;
-non terminal chamada_func;
-non terminal lista_exprs;
-non terminal resto_lista_exprs;
+non terminal 		atribuicao;
+non terminal 		iteracao;
+non terminal Decisao decisao;
+non terminal 		escrita;
+non terminal 		chamada_func_cmd;
+non terminal 		retorno;
+non terminal 		chamada_func;
+non terminal		lista_exprs;
+non terminal 		resto_lista_exprs;
 non terminal Expressao expressao;
 non terminal Expressao expr_basica;
 
@@ -135,11 +135,9 @@ lista_comandos ::= lista_comandos comando
 
 comando  ::= decl_variavel
            | atribuicao
-           | iteracao
-           | decisao:cmd 
-           {:
-           RESULT = cmd;
-           :}
+           | iteracao           
+           | decisao:d 
+             {: RESULT = d; :}
            | escrita
            | retorno
            | bloco
@@ -150,14 +148,12 @@ atribuicao ::= lista_idents ATRIBUICAO expressao PONTO_VIRGULA ;
 
 iteracao ::= KEY_WHILE ABRE_PAR expressao FECHA_PAR comando ;
 
-decisao ::= KEY_IF ABRE_PAR expressao:expr FECHA_PAR comando:cmdIf KEY_ELSE comando:cmdElse
-			{:
-				RESULT = new Decisao( expr, cmdIf, cmdElse);
-			:}
-            | KEY_IF ABRE_PAR expressao:expr FECHA_PAR comando:cmdIf
-            {:
-				RESULT = new Decisao( expr, cmdIf);
-			:}
+decisao ::= KEY_IF ABRE_PAR expressao:exp FECHA_PAR comando:cmdif KEY_ELSE comando:cmdelse
+			{: RESULT = new Decisao(exp, cmdif, cmdelse);  :}
+
+            | KEY_IF ABRE_PAR expressao:exp FECHA_PAR comando:cmd
+            {: RESULT = new Decisao(exp, cmd);  :}
+            
             ;
 
 escrita ::= KEY_PRINT ABRE_PAR expressao FECHA_PAR PONTO_VIRGULA ;
@@ -177,8 +173,10 @@ resto_lista_exprs ::= resto_lista_exprs VIRGULA expressao
                     ;
 
 expressao ::= expressao SOMA expressao
+        
         | expressao:esq SUB expressao:dir
-        {: RESULT = new ExpAritmetica(esq,dir,"SUB"):}
+        {: RESULT = new ExpAritmetica(esq, dir, "-");  :}
+        
         | expressao MULT expressao
         | expressao DIV expressao
         | expressao RESTO expressao
@@ -190,22 +188,25 @@ expressao ::= expressao SOMA expressao
         | expressao OP_MENOR_OU_IGUAL expressao
         | expressao OP_MAIOR_OU_IGUAL expressao
         | expressao OP_MAIOR_QUE expressao
+        
         | expr_basica:exp
-        {:RESULT = exp;:}
+        {:  RESULT = exp;  :}
         ;
 
 expr_basica ::= ABRE_PAR expressao FECHA_PAR 
          | NOT expr_basica
          | SUB expr_basica
+         
          | INT_LITERAL:lex
-         {:  
-         int valor Integer.parseInt(lex);
-         RESULT = new IntLiteral(valor); 
-         :}
+         {:  int valor = Integer.parseInt(lex); 
+             RESULT = new IntLiteral(valor);    :}
+         
          | CHAR_LITERAL
          | FLOAT_LITERAL
+         
          | STRING_LITERAL:lex
-         {:  RESULT = new StringLiteral(lex); :}
+         {: RESULT = new StringLiteral(lex);   :}
+         
          | IDENTIFICADOR
          | chamada_func
          ;
