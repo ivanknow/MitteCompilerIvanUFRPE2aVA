@@ -3,6 +3,8 @@ package syntax;
 import java_cup.runtime.*;
 import java.util.*;
 import arvore.*;
+import arvore.comando.*;
+import arvore.expressao.*;
 
 
 /*****  Terminais (tokens) *****/
@@ -16,14 +18,14 @@ terminal Object    OP_MENOR_QUE;
 terminal Object    OP_MAIOR_OU_IGUAL;
 terminal Object    OP_MENOR_OU_IGUAL;
     
-terminal Object    SOMA;
-terminal Object    SUB;
-terminal Object    MULT;
-terminal Object    DIV;
-terminal Object    RESTO;
-terminal Object    AND;
-terminal Object    OR;
-terminal Object    NOT;
+terminal Object  SOMA;
+terminal Object  SUB;
+terminal Object  MULT;
+terminal Object  DIV;
+terminal Object  RESTO;
+terminal Object  AND;
+terminal Object  OR;
+terminal Object  NOT;
     
 terminal Object    ATRIBUICAO;
     
@@ -40,11 +42,11 @@ terminal String    FLOAT_LITERAL;
 terminal String    CHAR_LITERAL;
 terminal String    STRING_LITERAL;
     
-terminal Object    KEY_IF;
-terminal Object    KEY_ELSE;
-terminal Object    KEY_WHILE;
-terminal Object    KEY_RETURN;
-terminal Object    KEY_INT;
+terminal String    KEY_IF;
+terminal String    KEY_ELSE;
+terminal String    KEY_WHILE;
+terminal String    KEY_RETURN;
+terminal String    KEY_INT;
 terminal Object    KEY_FLOAT;
 terminal Object    KEY_CHAR;
 terminal Object    KEY_STRING;
@@ -59,6 +61,7 @@ non terminal program;
 non terminal decl_global;
 non terminal decl_variavel;
 non terminal lista_idents;
+non terminal 		resto_lista_idents;
 non terminal tipo;
 non terminal decl_funcao;
 non terminal assinatura;
@@ -102,9 +105,12 @@ decl_global ::= decl_variavel
 decl_variavel ::= lista_idents DOIS_PONTOS tipo PONTO_VIRGULA
                ;
                
-lista_idents ::= IDENTIFICADOR  
-              |  lista_idents VIRGULA    
+lista_idents ::= IDENTIFICADOR resto_lista_idents  
              ;
+
+resto_lista_idents ::=  VIRGULA IDENTIFICADOR resto_lista_idents
+                     |  /* vazio */
+                     ;
 
 tipo ::= KEY_INT | KEY_CHAR | KEY_FLOAT | KEY_STRING ;
 
@@ -160,30 +166,45 @@ chamada_func_cmd ::= KEY_CALL chamada_func PONTO_VIRGULA ;
 
 retorno ::= KEY_RETURN expressao PONTO_VIRGULA ;
 
-chamada_func ::= IDENTIFICADOR ABRE_PAR lista_exprs FECHA_PAR ;
+chamada_func ::= IDENTIFICADOR:ident ABRE_PAR lista_exprs:lista_exp FECHA_PAR
+{:
+RESULT=new ChamadaFunc(ident,lista_exp);
+:} ;
 
 lista_exprs ::= expressao resto_lista_exprs
               | /*vazio*/
               ; 
 
 resto_lista_exprs ::= resto_lista_exprs VIRGULA expressao
+
                     | /*vazio*/
                     ;
 
 expressao ::= expressao SOMA expressao
         | expressao:esq SUB expressao:dir
-        {: RESULT = new ExpAritmetica(esq,dir,"SUB"):}
-        | expressao MULT expressao
-        | expressao DIV expressao
-        | expressao RESTO expressao
-        | expressao AND expressao
-        | expressao OR expressao
-        | expressao OP_IGUAL expressao
-        | expressao OP_DIFERENTE expressao
-        | expressao OP_MENOR_QUE expressao
-        | expressao OP_MENOR_OU_IGUAL expressao
-        | expressao OP_MAIOR_OU_IGUAL expressao
-        | expressao OP_MAIOR_QUE expressao
+        {: RESULT = new ExpAritmetica(esq,dir,"SUB");:}
+        | expressao:esq MULT expressao:dir
+        {: RESULT = new ExpAritmetica(esq,dir,"MULT");:}
+        | expressao:esq DIV expressao:dir
+        {: RESULT = new ExpAritmetica(esq,dir,"DIV");:}
+        | expressao:esq RESTO expressao:dir
+        {: RESULT = new ExpAritmetica(esq,dir,"RESTO");:}
+        | expressao:esq AND expressao:dir
+        {: RESULT = new ExpLogica(esq,dir,"AND");:}
+        | expressao:esq OR expressao:dir
+        {: RESULT = new ExpLogica(esq,dir,"OR");:}
+        | expressao:esq OP_IGUAL expressao:dir
+        {: RESULT = new ExprRelacional(esq,dir);:}
+        | expressao:esq OP_DIFERENTE expressao:dir
+        {: RESULT = new ExprRelacional(esq,dir);:}
+        | expressao:esq OP_MENOR_QUE expressao:dir
+        {: RESULT = new ExprRelacional(esq,dir);:}
+        | expressao:esq OP_MENOR_OU_IGUAL expressao:dir
+        {: RESULT = new ExprRelacional(esq,dir);:}
+        | expressao:esq OP_MAIOR_OU_IGUAL expressao:dir
+        {: RESULT = new ExprRelacional(esq,dir);:}
+        | expressao:esq OP_MAIOR_QUE expressao:dir
+        {: RESULT = new ExprRelacional(esq,dir);:}
         | expr_basica:exp
         {:RESULT = exp;:}
         ;
@@ -193,14 +214,27 @@ expr_basica ::= ABRE_PAR expressao FECHA_PAR
          | SUB expr_basica
          | INT_LITERAL:lex
          {:  
-         int valor Integer.parseInt(lex);
+         int valor =  Integer.parseInt(lex);
          RESULT = new IntLiteral(valor); 
          :}
-         | CHAR_LITERAL
+         | CHAR_LITERAL:lex
+         {:  
+         RESULT = new CharLiteral(lex); 
+         :}
          | FLOAT_LITERAL
+         {:
+         float valor =  Float.parseFloat(lex);
+         RESULT = new FloatLiteral(valor); 
+         :}
          | STRING_LITERAL:lex
-         {:  RESULT = new StringLiteral(lex); :}
-         | IDENTIFICADOR
+         {:  
+         RESULT = new StringLiteral(lex);
+         :}
+         | IDENTIFICADOR:lexema
+         {:
+         //TODO verificar se simbolo esta na tabela
+         RESULT = new Identificador(lexema);
+         :}
          | chamada_func
          ;
 

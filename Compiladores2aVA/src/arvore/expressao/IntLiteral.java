@@ -1,7 +1,7 @@
 package arvore.expressao;
 
 
-public class IntLiteral{
+public class IntLiteral implements Expressao{
 	private Integer intLiteral;
 
 	public IntLiteral(Integer intLiteral) {
