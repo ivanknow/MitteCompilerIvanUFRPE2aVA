@@ -9,7 +9,7 @@ import arvore.expressao.*;
 
 /*****  Terminais (tokens) *****/
 /*o tipo que eu estou mandando no lexer eu devo mandar aqui*/
-terminal Identificador IDENTIFICADOR;
+terminal String IDENTIFICADOR;
     
 terminal String    OP_IGUAL;
 terminal String    OP_DIFERENTE;
@@ -29,23 +29,23 @@ terminal String  NOT;
     
 terminal ATRIBUICAO;
     
-terminal     ABRE_PAR;
-terminal     FECHA_PAR;
-terminal     ABRE_CHAVE;
-terminal     FECHA_CHAVE;
-terminal     VIRGULA;
-terminal     PONTO_VIRGULA;
-terminal     DOIS_PONTOS;
+terminal ABRE_PAR;
+terminal FECHA_PAR;
+terminal ABRE_CHAVE;
+terminal FECHA_CHAVE;
+terminal VIRGULA;
+terminal PONTO_VIRGULA;
+terminal DOIS_PONTOS;
     
-terminal String    INT_LITERAL;
-terminal String    FLOAT_LITERAL;
-terminal String    CHAR_LITERAL;
-terminal String    STRING_LITERAL;
+terminal String INT_LITERAL;
+terminal String FLOAT_LITERAL;
+terminal String CHAR_LITERAL;
+terminal String STRING_LITERAL;
     
-terminal     KEY_IF;
-terminal     KEY_ELSE;
-terminal     KEY_WHILE;
-terminal     KEY_RETURN;
+terminal KEY_IF;
+terminal  KEY_ELSE;
+terminal KEY_WHILE;
+terminal KEY_RETURN;
 terminal String    KEY_INT;
 terminal String    KEY_FLOAT;
 terminal String    KEY_CHAR;
@@ -58,27 +58,27 @@ terminal     KEY_PRINT;
 /***** Nao-terminais *****/
 
 non terminal Programa program;
-non terminal decl_global;
-non terminal decl_variavel;
-non terminal lista_idents;
-non terminal resto_lista_idents;
-non terminal tipo;
-non terminal decl_funcao;
-non terminal assinatura;
-non terminal param_formais;
-non terminal resto_param_formais;
-non terminal bloco;
-non terminal lista_comandos;
+non terminal DeclGlobal decl_global;
+non terminal DeclGlobal decl_variavel;
+non terminal List<Identificador> lista_idents;
+non terminal List<Identificador> resto_lista_idents;
+non terminal Tipo tipo;
+non terminal DeclFuncao decl_funcao;
+non terminal Assinatura assinatura;
+non terminal ParametrosFormais param_formais;
+non terminal ArrayList<Identificador> resto_param_formais;
+non terminal Bloco bloco;
+non terminal List<Comando> lista_comandos;
 non terminal Comando comando;
-non terminal atribuicao;
-non terminal iteracao;
+non terminal Atribuicao atribuicao;
+non terminal Iteracao iteracao;
 non terminal Decisao  decisao;
-non terminal escrita;
-non terminal chamada_func_cmd;
-non terminal retorno;
-non terminal chamada_func;
-non terminal lista_exprs;
-non terminal resto_lista_exprs;
+non terminal Escrita escrita;
+non terminal ChamadaFuncaoCmd chamada_func_cmd;
+non terminal Retorno retorno;
+non terminal ChamadaFuncao chamada_func;
+non terminal List<Expressao> lista_exprs;
+non terminal List<Expressao> resto_lista_exprs;
 non terminal Expressao expressao;
 non terminal Expressao expr_basica;
 
@@ -266,9 +266,17 @@ comando  ::= decl_variavel:cmd
            :}
            ;
 
-atribuicao ::= lista_idents ATRIBUICAO expressao PONTO_VIRGULA ;
+atribuicao ::= lista_idents:lista ATRIBUICAO expressao:exp PONTO_VIRGULA 
+			{:
+				RESULT = new Atribuicao(lista,exp);
+			:}
+			;
 
-iteracao ::= KEY_WHILE ABRE_PAR expressao FECHA_PAR comando ;
+iteracao ::= KEY_WHILE ABRE_PAR expressao:exp FECHA_PAR comando:cmd
+			{:
+				RESULT = new Iteracao(exp,cmd);
+			:}
+			 ;
 
 decisao ::= KEY_IF ABRE_PAR expressao:expr FECHA_PAR comando:cmdIf KEY_ELSE comando:cmdElse
 			{:
