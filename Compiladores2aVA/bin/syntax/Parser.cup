@@ -66,7 +66,7 @@ non terminal Tipo tipo;
 non terminal DeclFuncao decl_funcao;
 non terminal Assinatura assinatura;
 non terminal ParametrosFormais param_formais;
-non terminal ArrayList<Identificador> resto_param_formais;
+non terminal List resto_param_formais;
 non terminal Bloco bloco;
 non terminal List<Comando> lista_comandos;
 non terminal Comando comando;
@@ -74,9 +74,9 @@ non terminal Atribuicao atribuicao;
 non terminal Iteracao iteracao;
 non terminal Decisao  decisao;
 non terminal Escrita escrita;
-non terminal ChamadaFuncaoCmd chamada_func_cmd;
+non terminal ChamadaFuncCmd chamada_func_cmd;
 non terminal Retorno retorno;
-non terminal ChamadaFuncao chamada_func;
+non terminal ChamadaFunc chamada_func;
 non terminal List<Expressao> lista_exprs;
 non terminal List<Expressao> resto_lista_exprs;
 non terminal Expressao expressao;
@@ -94,21 +94,18 @@ precedence left NOT;     //simbolo de maior precedencia
 
 /***** A gramática *****/
 
-program ::= program:progLoop decl_global:decl 
-{:
-	Programa prog = new Programa();
-	
-	if(progLoop!=null){
-		for(DeclGlobal d1:progLoop.getDeclaracoes()){
-			prog.add(d1);
-		}
-	}
-	prog.add(decl);
-	
-	RESULT = prog;
-	
-:}
-          | /*vazio*/ 
+program ::= program:prog decl_global:decl 
+		{:
+
+			prog.add(decl);
+			
+			RESULT = prog;
+			
+		:}
+          | /*vazio*/
+          {:
+          RESULT = new Programa();
+          :} 
           ;
 
 decl_global ::= decl_variavel:decl
@@ -122,29 +119,29 @@ decl_global ::= decl_variavel:decl
             ;
             
 decl_variavel ::= lista_idents:lista DOIS_PONTOS tipo:tipo PONTO_VIRGULA
-{:
-RESULT = DeclVariavel(tipo,lista);
-:}
+			{:
+			RESULT = new DeclVariavel(tipo,lista);
+			:}
                ;
                
 lista_idents ::= IDENTIFICADOR:ident resto_lista_idents:resto 
-{:
-	List<Identificador> idents = new ArrayList<Identificador>();
-	
-	idents.add(ident);
-	
-	if(resto!=null){
-		idents.addAll(resto);
-	}
-	
-	RESULT = idents;
-:} 
+			{:
+				List<Identificador> idents = new ArrayList<Identificador>();
+				
+				idents.add(new Identificador(ident));
+				
+				if(resto!=null){
+					idents.addAll(resto);
+				}
+				
+				RESULT = idents;
+			:} 
              ;
 
 resto_lista_idents ::=  VIRGULA IDENTIFICADOR:ident resto_lista_idents:resto
 					{:
 					List<Identificador> idents = new ArrayList<Identificador>();
-					idents.add(ident);
+					idents.add(new Identificador(ident));
 						if(resto==null){
 							idents.addAll(resto);
 						}
@@ -171,21 +168,26 @@ RESULT = new DeclFuncao(assinatura,bloco);
 
 assinatura ::= KEY_DEF IDENTIFICADOR:ident ABRE_PAR param_formais:param FECHA_PAR DOIS_PONTOS tipo:tipo
 			{:
-				RESULT = new Assinatura(ident,param,tipo);
+				Identificador i = new Identificador(ident);
+				RESULT = new Assinatura(i,param,tipo);
 			:}
-             | KEY_DEF IDENTIFICADOR ABRE_PAR param_formais FECHA_PAR
+             | KEY_DEF IDENTIFICADOR:ident ABRE_PAR param_formais:param FECHA_PAR
              {:
-				RESULT = new Assinatura(ident,param);
+             	Identificador i = new Identificador(ident);
+				RESULT = new Assinatura(i,param);
 			:}
              ;
 
 param_formais ::= IDENTIFICADOR:ident DOIS_PONTOS tipo:tipo resto_param_formais:resto 
 				{:
-				ident.setTipo(tipo);
+				
+				Identificador i = new Identificador(ident);
+				
+				i.setTipo(tipo);
 
 				ParametrosFormais parametros = new ParametrosFormais();
 
-				parametros.getParametros().add(ident);
+				parametros.getParametros().add(i);
 					
 					if(resto!=null){
 						parametros.getParametros().addAll(resto);
@@ -198,11 +200,17 @@ param_formais ::= IDENTIFICADOR:ident DOIS_PONTOS tipo:tipo resto_param_formais:
                   
 resto_param_formais ::= VIRGULA IDENTIFICADOR:ident DOIS_PONTOS tipo:tipo resto_param_formais:resto
 					{:
-						ident.setTipo(tipo);
+					
+					
+				Identificador i = new Identificador(ident);
+				
+				i.setTipo(tipo);
+					
+					i.setTipo(tipo);
 
 						List param = new ArrayList<Identificador>();
 						
-						param.add(ident);
+						param.add(i);
 												
 						if(resto!=null){
 						param.addAll(resto);
@@ -216,7 +224,7 @@ resto_param_formais ::= VIRGULA IDENTIFICADOR:ident DOIS_PONTOS tipo:tipo resto_
 bloco ::= ABRE_CHAVE lista_comandos:lista FECHA_CHAVE
 {:
 Bloco bloco = new Bloco();
-bloco.add(lista);
+bloco.getComandos().addAll(lista);
 
 RESULT = bloco;
 :}
@@ -288,15 +296,15 @@ decisao ::= KEY_IF ABRE_PAR expressao:expr FECHA_PAR comando:cmdIf KEY_ELSE coma
 			:}
             ;
 
-escrita ::= KEY_PRINT ABRE_PAR expressao FECHA_PAR PONTO_VIRGULA ;
+escrita ::= KEY_PRINT ABRE_PAR expressao:exp FECHA_PAR PONTO_VIRGULA 
 {:
 RESULT=new Escrita(exp);
 :} ;
-chamada_func_cmd ::= KEY_CALL chamada_func:chamada PONTO_VIRGULA ;
+chamada_func_cmd ::= KEY_CALL chamada_func:chamada PONTO_VIRGULA 
 {:
 RESULT=new ChamadaFuncCmd(chamada);
 :} ;
-retorno ::= KEY_RETURN expressao:exp PONTO_VIRGULA ;
+retorno ::= KEY_RETURN expressao:exp PONTO_VIRGULA 
 {:
 RESULT=new Retorno(exp);
 :} ;
@@ -348,17 +356,17 @@ expressao ::= expressao SOMA expressao
         {: RESULT = new ExpLogica(esq,dir,"AND");:}
         | expressao:esq OR:lex expressao:dir
         {: RESULT = new ExpLogica(esq,dir,"OR");:}
-        | expressao:esq OP_IGUAL:lex expressao:dir
+        | expressao:esq OP_IGUAL expressao:dir
         {: RESULT = new ExprRelacional(esq,dir);:}
-        | expressao:esq OP_DIFERENTE:lex expressao:dir
+        | expressao:esq OP_DIFERENTE expressao:dir
         {: RESULT = new ExprRelacional(esq,dir);:}
-        | expressao:esq OP_MENOR_QUE:lex expressao:dir
+        | expressao:esq OP_MENOR_QUE expressao:dir
         {: RESULT = new ExprRelacional(esq,dir);:}
-        | expressao:esq OP_MENOR_OU_IGUAL:lex expressao:dir
+        | expressao:esq OP_MENOR_OU_IGUAL expressao:dir
         {: RESULT = new ExprRelacional(esq,dir);:}
-        | expressao:esq OP_MAIOR_OU_IGUAL:lex expressao:dir
-        {: RESULT = new ExprRelacional:lex(esq,dir);:}
-        | expressao:esq OP_MAIOR_QUE:lex expressao:dir
+        | expressao:esq OP_MAIOR_OU_IGUAL expressao:dir
+        {: RESULT = new ExprRelacional(esq,dir);:}
+        | expressao:esq OP_MAIOR_QUE expressao:dir
         {: RESULT = new ExprRelacional(esq,dir);:}
         | expr_basica:exp
         {:RESULT = exp;:}
@@ -376,7 +384,7 @@ expr_basica ::= ABRE_PAR expressao FECHA_PAR
          {:  
          RESULT = new CharLiteral(lex); 
          :}
-         | FLOAT_LITERAL
+         | FLOAT_LITERAL:lex
          {:
          float valor =  Float.parseFloat(lex);
          RESULT = new FloatLiteral(valor); 

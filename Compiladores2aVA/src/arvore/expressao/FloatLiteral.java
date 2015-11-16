@@ -2,5 +2,8 @@ package arvore.expressao;
 
 
 public class FloatLiteral implements Expressao {
-	//completar...
+	float f;
+	public FloatLiteral(Float f) {
+		this.f=f;
+	}
 }

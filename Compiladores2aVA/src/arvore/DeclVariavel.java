@@ -5,19 +5,19 @@ import java.util.List;
 import arvore.expressao.Identificador;
 
 public class DeclVariavel implements DeclGlobal {
-	String tipo;
+	Tipo tipo;
 	List<Identificador> ident;
 	
 	
-	public DeclVariavel(String tipo, List<Identificador> ident) {
+	public DeclVariavel(Tipo tipo, List<Identificador> ident) {
 		
 		this.tipo = tipo;
 		this.ident = ident;
 	}
-	public String getTipo() {
+	public Tipo getTipo() {
 		return tipo;
 	}
-	public void setTipo(String tipo) {
+	public void setTipo(Tipo tipo) {
 		this.tipo = tipo;
 	}
 	public List<Identificador> getIdent() {

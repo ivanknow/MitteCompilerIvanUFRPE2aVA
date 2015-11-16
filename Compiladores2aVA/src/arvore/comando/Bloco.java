@@ -14,5 +14,12 @@ public class Bloco implements Comando {
 		this.comandos.add(cmd);
 	}
 
+	public List<Comando> getComandos() {
+		return comandos;
+	}
+	
+	public void setComandos(List<Comando> comandos) {
+		this.comandos = comandos;
+	}
 
 }

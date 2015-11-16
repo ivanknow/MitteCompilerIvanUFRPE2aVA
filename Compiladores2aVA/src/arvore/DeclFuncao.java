@@ -5,7 +5,7 @@ import arvore.comando.Bloco;
 public class DeclFuncao implements DeclGlobal {
 	private Bloco bloco;
 	private Assinatura assinatura;
-	public DeclFuncao(Bloco bloco, Assinatura assinatura) {
+	public DeclFuncao(Assinatura assinatura,Bloco bloco) {
 		super();
 		this.bloco = bloco;
 		this.assinatura = assinatura;
