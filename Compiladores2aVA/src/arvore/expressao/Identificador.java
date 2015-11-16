@@ -1,10 +1,13 @@
 package arvore.expressao;
 
+import arvore.Tipo;
+
 public class Identificador implements Expressao {
-	private String label, escopo, retorno, tipo;
+	private String label, escopo, retorno;
+	Tipo tipo;
 
 	public Identificador(String label) {
-		
+		this.label = label;
 	}
 
 	public String getLabel() {
@@ -31,13 +34,15 @@ public class Identificador implements Expressao {
 		this.retorno = retorno;
 	}
 
-	public String getTipo() {
+	public Tipo getTipo() {
 		return tipo;
 	}
 
-	public void setTipo(String tipo) {
+	public void setTipo(Tipo tipo) {
 		this.tipo = tipo;
 	}
+
+	
 	
 	
 }

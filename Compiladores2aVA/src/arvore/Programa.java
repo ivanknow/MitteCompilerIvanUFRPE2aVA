@@ -14,4 +14,14 @@ public class Programa {
 		this.declaracoes.add(dec);
 	}
 
+	public List<DeclGlobal> getDeclaracoes() {
+		return declaracoes;
+	}
+
+	public void setDeclaracoes(List<DeclGlobal> declaracoes) {
+		this.declaracoes = declaracoes;
+	}
+	
+	
+
 }

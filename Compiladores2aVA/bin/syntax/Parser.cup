@@ -9,59 +9,59 @@ import arvore.expressao.*;
 
 /*****  Terminais (tokens) *****/
 /*o tipo que eu estou mandando no lexer eu devo mandar aqui*/
-terminal String IDENTIFICADOR;
+terminal Identificador IDENTIFICADOR;
     
-terminal Object    OP_IGUAL;
-terminal Object    OP_DIFERENTE;
-terminal Object    OP_MAIOR_QUE;
-terminal Object    OP_MENOR_QUE;
-terminal Object    OP_MAIOR_OU_IGUAL;
-terminal Object    OP_MENOR_OU_IGUAL;
+terminal String    OP_IGUAL;
+terminal String    OP_DIFERENTE;
+terminal String    OP_MAIOR_QUE;
+terminal String    OP_MENOR_QUE;
+terminal String    OP_MAIOR_OU_IGUAL;
+terminal String    OP_MENOR_OU_IGUAL;
     
-terminal Object  SOMA;
-terminal Object  SUB;
-terminal Object  MULT;
-terminal Object  DIV;
-terminal Object  RESTO;
-terminal Object  AND;
-terminal Object  OR;
-terminal Object  NOT;
+terminal String  SOMA;
+terminal String  SUB;
+terminal String  MULT;
+terminal String  DIV;
+terminal String  RESTO;
+terminal String  AND;
+terminal String  OR;
+terminal String  NOT;
     
-terminal Object    ATRIBUICAO;
+terminal ATRIBUICAO;
     
-terminal Object    ABRE_PAR;
-terminal Object    FECHA_PAR;
-terminal Object    ABRE_CHAVE;
-terminal Object    FECHA_CHAVE;
-terminal Object    VIRGULA;
-terminal Object    PONTO_VIRGULA;
-terminal Object    DOIS_PONTOS;
+terminal     ABRE_PAR;
+terminal     FECHA_PAR;
+terminal     ABRE_CHAVE;
+terminal     FECHA_CHAVE;
+terminal     VIRGULA;
+terminal     PONTO_VIRGULA;
+terminal     DOIS_PONTOS;
     
 terminal String    INT_LITERAL;
 terminal String    FLOAT_LITERAL;
 terminal String    CHAR_LITERAL;
 terminal String    STRING_LITERAL;
     
-terminal String    KEY_IF;
-terminal String    KEY_ELSE;
-terminal String    KEY_WHILE;
-terminal String    KEY_RETURN;
+terminal     KEY_IF;
+terminal     KEY_ELSE;
+terminal     KEY_WHILE;
+terminal     KEY_RETURN;
 terminal String    KEY_INT;
-terminal Object    KEY_FLOAT;
-terminal Object    KEY_CHAR;
-terminal Object    KEY_STRING;
-terminal Object    KEY_CALL;
-terminal Object    KEY_DEF;
-terminal Object    KEY_PRINT;
+terminal String    KEY_FLOAT;
+terminal String    KEY_CHAR;
+terminal String    KEY_STRING;
+terminal     KEY_CALL;
+terminal     KEY_DEF;
+terminal     KEY_PRINT;
 
 
 /***** Nao-terminais *****/
 
-non terminal program;
+non terminal Programa program;
 non terminal decl_global;
 non terminal decl_variavel;
 non terminal lista_idents;
-non terminal 		resto_lista_idents;
+non terminal resto_lista_idents;
 non terminal tipo;
 non terminal decl_funcao;
 non terminal assinatura;
@@ -94,56 +94,176 @@ precedence left NOT;     //simbolo de maior precedencia
 
 /***** A gramática *****/
 
-program ::= program decl_global 
+program ::= program:progLoop decl_global:decl 
+{:
+	Programa prog = new Programa();
+	
+	if(progLoop!=null){
+		for(DeclGlobal d1:progLoop.getDeclaracoes()){
+			prog.add(d1);
+		}
+	}
+	prog.add(decl);
+	
+	RESULT = prog;
+	
+:}
           | /*vazio*/ 
           ;
 
-decl_global ::= decl_variavel
-            | decl_funcao
+decl_global ::= decl_variavel:decl
+			{:
+			RESULT = decl;
+			:}
+            | decl_funcao:decl
+            {:
+			RESULT = decl;
+			:}
             ;
             
-decl_variavel ::= lista_idents DOIS_PONTOS tipo PONTO_VIRGULA
+decl_variavel ::= lista_idents:lista DOIS_PONTOS tipo:tipo PONTO_VIRGULA
+{:
+RESULT = DeclVariavel(tipo,lista);
+:}
                ;
                
-lista_idents ::= IDENTIFICADOR resto_lista_idents  
+lista_idents ::= IDENTIFICADOR:ident resto_lista_idents:resto 
+{:
+	List<Identificador> idents = new ArrayList<Identificador>();
+	
+	idents.add(ident);
+	
+	if(resto!=null){
+		idents.addAll(resto);
+	}
+	
+	RESULT = idents;
+:} 
              ;
 
-resto_lista_idents ::=  VIRGULA IDENTIFICADOR resto_lista_idents
+resto_lista_idents ::=  VIRGULA IDENTIFICADOR:ident resto_lista_idents:resto
+					{:
+					List<Identificador> idents = new ArrayList<Identificador>();
+					idents.add(ident);
+						if(resto==null){
+							idents.addAll(resto);
+						}
+						
+						RESULT = idents;
+					:}
                      |  /* vazio */
                      ;
 
-tipo ::= KEY_INT | KEY_CHAR | KEY_FLOAT | KEY_STRING ;
+tipo ::= KEY_INT 
+		{:RESULT = Tipo.INT;:}
+		| KEY_CHAR 
+		{:RESULT = Tipo.CHAR;:}
+		| KEY_FLOAT 
+		{:RESULT = Tipo.FLOAT;:}
+		| KEY_STRING
+		{:RESULT = Tipo.STRING;:}
+		 ;
 
-decl_funcao ::= assinatura bloco ;
+decl_funcao ::= assinatura:assinatura bloco:bloco
+{:
+RESULT = new DeclFuncao(assinatura,bloco);
+:} ;
 
-assinatura ::= KEY_DEF IDENTIFICADOR ABRE_PAR param_formais FECHA_PAR DOIS_PONTOS tipo
+assinatura ::= KEY_DEF IDENTIFICADOR:ident ABRE_PAR param_formais:param FECHA_PAR DOIS_PONTOS tipo:tipo
+			{:
+				RESULT = new Assinatura(ident,param,tipo);
+			:}
              | KEY_DEF IDENTIFICADOR ABRE_PAR param_formais FECHA_PAR
+             {:
+				RESULT = new Assinatura(ident,param);
+			:}
              ;
 
-param_formais ::= IDENTIFICADOR DOIS_PONTOS tipo resto_param_formais 
+param_formais ::= IDENTIFICADOR:ident DOIS_PONTOS tipo:tipo resto_param_formais:resto 
+				{:
+				ident.setTipo(tipo);
+
+				ParametrosFormais parametros = new ParametrosFormais();
+
+				parametros.getParametros().add(ident);
+					
+					if(resto!=null){
+						parametros.getParametros().addAll(resto);
+					}
+					
+				RESULT = parametros;
+				:}
                 | /*vazio*/ 
                 ;
                   
-resto_param_formais ::= VIRGULA IDENTIFICADOR DOIS_PONTOS tipo resto_param_formais
+resto_param_formais ::= VIRGULA IDENTIFICADOR:ident DOIS_PONTOS tipo:tipo resto_param_formais:resto
+					{:
+						ident.setTipo(tipo);
+
+						List param = new ArrayList<Identificador>();
+						
+						param.add(ident);
+												
+						if(resto!=null){
+						param.addAll(resto);
+						}
+						
+						RESULT = param;
+					:}
                       | /*vazio*/
                       ; 
 
-bloco ::= ABRE_CHAVE lista_comandos FECHA_CHAVE ;
+bloco ::= ABRE_CHAVE lista_comandos:lista FECHA_CHAVE
+{:
+Bloco bloco = new Bloco();
+bloco.add(lista);
 
-lista_comandos ::= lista_comandos comando
+RESULT = bloco;
+:}
+ ;
+
+lista_comandos ::= lista_comandos:lista comando:comando
+{:
+	List<Comando> comandos =  new ArrayList<>();
+	comandos.add(comando);
+	if(lista!=null){
+	comandos.addAll(lista);
+	}
+:}
                  ;
 
-comando  ::= decl_variavel
-           | atribuicao
-           | iteracao
+comando  ::= decl_variavel:cmd
+			{:
+           RESULT = cmd;
+           :} 
+           | atribuicao:cmd
+           {:
+           RESULT = cmd;
+           :} 
+           | iteracao:cmd
+           {:
+           RESULT = cmd;
+           :} 
            | decisao:cmd 
            {:
            RESULT = cmd;
            :}
-           | escrita
-           | retorno
-           | bloco
-           | chamada_func_cmd
+           | escrita:cmd 
+           {:
+           RESULT = cmd;
+           :}
+           | retorno:cmd 
+           {:
+           RESULT = cmd;
+           :}
+           | bloco:cmd 
+           {:
+           RESULT = cmd;
+           :}
+           | chamada_func_cmd:cmd
+           {:
+           RESULT = cmd;
+           :}
            ;
 
 atribuicao ::= lista_idents ATRIBUICAO expressao PONTO_VIRGULA ;
@@ -161,49 +281,76 @@ decisao ::= KEY_IF ABRE_PAR expressao:expr FECHA_PAR comando:cmdIf KEY_ELSE coma
             ;
 
 escrita ::= KEY_PRINT ABRE_PAR expressao FECHA_PAR PONTO_VIRGULA ;
-
-chamada_func_cmd ::= KEY_CALL chamada_func PONTO_VIRGULA ;
-
-retorno ::= KEY_RETURN expressao PONTO_VIRGULA ;
-
+{:
+RESULT=new Escrita(exp);
+:} ;
+chamada_func_cmd ::= KEY_CALL chamada_func:chamada PONTO_VIRGULA ;
+{:
+RESULT=new ChamadaFuncCmd(chamada);
+:} ;
+retorno ::= KEY_RETURN expressao:exp PONTO_VIRGULA ;
+{:
+RESULT=new Retorno(exp);
+:} ;
 chamada_func ::= IDENTIFICADOR:ident ABRE_PAR lista_exprs:lista_exp FECHA_PAR
 {:
 RESULT=new ChamadaFunc(ident,lista_exp);
 :} ;
 
-lista_exprs ::= expressao resto_lista_exprs
+lista_exprs ::= expressao:exp resto_lista_exprs:resto
+			{:
+		List<Expressao> exps = new ArrayList<Expressao>();
+		exps.add(exp);
+			if(resto!=null){
+				exps.addAll(resto);
+			} 
+			
+			RESULT = exps;
+			:}
               | /*vazio*/
+              {:
+              RESULT =new ArrayList<Expressao>();
+              :}
               ; 
 
-resto_lista_exprs ::= resto_lista_exprs VIRGULA expressao
+resto_lista_exprs ::= resto_lista_exprs:resto VIRGULA expressao:exp
+{:
+	List<Expressao> exps = new ArrayList<Expressao>();
+		exps.add(exp);
+			if(resto!=null){
+				exps.addAll(resto);
+			} 
+			
+			RESULT = exps;
 
+:}
                     | /*vazio*/
                     ;
 
 expressao ::= expressao SOMA expressao
-        | expressao:esq SUB expressao:dir
-        {: RESULT = new ExpAritmetica(esq,dir,"SUB");:}
-        | expressao:esq MULT expressao:dir
-        {: RESULT = new ExpAritmetica(esq,dir,"MULT");:}
-        | expressao:esq DIV expressao:dir
-        {: RESULT = new ExpAritmetica(esq,dir,"DIV");:}
-        | expressao:esq RESTO expressao:dir
-        {: RESULT = new ExpAritmetica(esq,dir,"RESTO");:}
-        | expressao:esq AND expressao:dir
+        | expressao:esq SUB:lex expressao:dir
+        {: RESULT = new ExpAritmetica(esq,dir,lex);:}
+        | expressao:esq MULT:lex expressao:dir
+        {: RESULT = new ExpAritmetica(esq,dir,lex);:}
+        | expressao:esq DIV:lex expressao:dir
+        {: RESULT = new ExpAritmetica(esq,dir,lex);:}
+        | expressao:esq RESTO:lex expressao:dir
+        {: RESULT = new ExpAritmetica(esq,dir,lex);:}
+        | expressao:esq AND:lex expressao:dir
         {: RESULT = new ExpLogica(esq,dir,"AND");:}
-        | expressao:esq OR expressao:dir
+        | expressao:esq OR:lex expressao:dir
         {: RESULT = new ExpLogica(esq,dir,"OR");:}
-        | expressao:esq OP_IGUAL expressao:dir
+        | expressao:esq OP_IGUAL:lex expressao:dir
         {: RESULT = new ExprRelacional(esq,dir);:}
-        | expressao:esq OP_DIFERENTE expressao:dir
+        | expressao:esq OP_DIFERENTE:lex expressao:dir
         {: RESULT = new ExprRelacional(esq,dir);:}
-        | expressao:esq OP_MENOR_QUE expressao:dir
+        | expressao:esq OP_MENOR_QUE:lex expressao:dir
         {: RESULT = new ExprRelacional(esq,dir);:}
-        | expressao:esq OP_MENOR_OU_IGUAL expressao:dir
+        | expressao:esq OP_MENOR_OU_IGUAL:lex expressao:dir
         {: RESULT = new ExprRelacional(esq,dir);:}
-        | expressao:esq OP_MAIOR_OU_IGUAL expressao:dir
-        {: RESULT = new ExprRelacional(esq,dir);:}
-        | expressao:esq OP_MAIOR_QUE expressao:dir
+        | expressao:esq OP_MAIOR_OU_IGUAL:lex expressao:dir
+        {: RESULT = new ExprRelacional:lex(esq,dir);:}
+        | expressao:esq OP_MAIOR_QUE:lex expressao:dir
         {: RESULT = new ExprRelacional(esq,dir);:}
         | expr_basica:exp
         {:RESULT = exp;:}

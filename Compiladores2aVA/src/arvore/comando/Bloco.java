@@ -7,7 +7,7 @@ public class Bloco implements Comando {
 	private List<Comando> comandos;
 	
 	public Bloco() {
-		this.comandos = new ArrayList<>();
+		this.comandos = new ArrayList<Comando>();
 	}
 	
 	public void add(Comando cmd) {
