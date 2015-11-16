@@ -37,10 +37,10 @@ public class TestParser {
 			parser = new Parser(lexer);
 
 			Programa p = (Programa)parser.parse().value;
-			System.out.println("\nSintaxe OK!");
+			System.out.println("\nSintaxe OK!"+p);
 		
 		} catch (Exception e) {
-			System.out.println("\nErro sintático!");
+			System.out.println("\nErro sintático!"+e.getMessage());
 			e.printStackTrace();
 		}
 

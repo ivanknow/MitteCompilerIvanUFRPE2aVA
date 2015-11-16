@@ -42,6 +42,13 @@ public class Identificador implements Expressao {
 		this.tipo = tipo;
 	}
 
+	@Override
+	public String toString() {
+		return "\nIdentificador [label=" + label + ", escopo=" + escopo
+				+ ", retorno=" + retorno + ", tipo=" + tipo + "]";
+	}
+
+	
 	
 	
 	

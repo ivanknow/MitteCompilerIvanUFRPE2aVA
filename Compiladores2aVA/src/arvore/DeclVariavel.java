@@ -26,6 +26,10 @@ public class DeclVariavel implements DeclGlobal {
 	public void setIdent(List<Identificador> ident) {
 		this.ident = ident;
 	}
+	@Override
+	public String toString() {
+		return "\nDeclVariavel [tipo=" + tipo + ", ident=" + ident + "]";
+	}
 
 	
 	

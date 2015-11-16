@@ -7,6 +7,23 @@ import arvore.comando.*;
 import arvore.expressao.*;
 
 
+parser code {:
+
+  public void syntax_error(Symbol cur_token) {
+	  System.out.printf("Erro de sintaxe na linha %d, coluna %d (token tipo %d inesperado). \n",
+			  cur_token.left, cur_token.right, cur_token.sym);
+			  System.out.println(cur_token.value);
+  }
+  public void unrecovered_syntax_error(Symbol cur_token) throws Exception {
+	  done_parsing();
+	  String msg = "Erro de sintaxe na linha " + cur_token.left + ", coluna " + cur_token.right 
+			  + " (token tipo " + cur_token.sym + " inesperado).";
+			  System.out.println(cur_token.value);
+	  throw new Exception(msg);
+  }
+
+:}
+
 /*****  Terminais (tokens) *****/
 /*o tipo que eu estou mandando no lexer eu devo mandar aqui*/
 terminal String IDENTIFICADOR;
@@ -92,7 +109,7 @@ precedence left SOMA, SUB;
 precedence left MULT, DIV, RESTO;   
 precedence left NOT;     //simbolo de maior precedencia
 
-/***** A gram·tica *****/
+/***** A gram√°tica *****/
 
 program ::= program:prog decl_global:decl 
 		{:
@@ -142,7 +159,7 @@ resto_lista_idents ::=  VIRGULA IDENTIFICADOR:ident resto_lista_idents:resto
 					{:
 					List<Identificador> idents = new ArrayList<Identificador>();
 					idents.add(new Identificador(ident));
-						if(resto==null){
+						if(resto!=null){
 							idents.addAll(resto);
 						}
 						
@@ -161,9 +178,9 @@ tipo ::= KEY_INT
 		{:RESULT = Tipo.STRING;:}
 		 ;
 
-decl_funcao ::= assinatura:assinatura bloco:bloco
+decl_funcao ::= assinatura:ass bloco:bloco
 {:
-RESULT = new DeclFuncao(assinatura,bloco);
+RESULT = new DeclFuncao(ass,bloco);
 :} ;
 
 assinatura ::= KEY_DEF IDENTIFICADOR:ident ABRE_PAR param_formais:param FECHA_PAR DOIS_PONTOS tipo:tipo
@@ -178,47 +195,42 @@ assinatura ::= KEY_DEF IDENTIFICADOR:ident ABRE_PAR param_formais:param FECHA_PA
 			:}
              ;
 
-param_formais ::= IDENTIFICADOR:ident DOIS_PONTOS tipo:tipo resto_param_formais:resto 
+param_formais ::= IDENTIFICADOR:ident DOIS_PONTOS tipo:tipo resto_param_formais:paramList 
 				{:
-				
+				ParametrosFormais parametros = new ParametrosFormais();
+               
 				Identificador i = new Identificador(ident);
 				
 				i.setTipo(tipo);
 
-				ParametrosFormais parametros = new ParametrosFormais();
-
-				parametros.getParametros().add(i);
+				paramList.add(i);
 					
-					if(resto!=null){
-						parametros.getParametros().addAll(resto);
-					}
-					
-				RESULT = parametros;
+				parametros.setParametros(paramList);
+				
+				 RESULT = parametros;
 				:}
                 | /*vazio*/ 
+                {:
+                ParametrosFormais parametros = new ParametrosFormais();
+                RESULT = parametros;
+                :}
                 ;
                   
-resto_param_formais ::= VIRGULA IDENTIFICADOR:ident DOIS_PONTOS tipo:tipo resto_param_formais:resto
+resto_param_formais ::= VIRGULA IDENTIFICADOR:ident DOIS_PONTOS tipo:tipo resto_param_formais:param
 					{:
 					
-					
-				Identificador i = new Identificador(ident);
-				
-				i.setTipo(tipo);
+					Identificador i = new Identificador(ident);
 					
 					i.setTipo(tipo);
-
-						List param = new ArrayList<Identificador>();
-						
-						param.add(i);
-												
-						if(resto!=null){
-						param.addAll(resto);
-						}
-						
-						RESULT = param;
+	
+					param.add(i);
+							
+					RESULT = param;
 					:}
-                      | /*vazio*/
+                    | /*vazio*/
+                    {:
+                      RESULT =  new ArrayList<Identificador>();
+                    :}
                       ; 
 
 bloco ::= ABRE_CHAVE lista_comandos:lista FECHA_CHAVE
@@ -233,10 +245,16 @@ RESULT = bloco;
 lista_comandos ::= lista_comandos:lista comando:comando
 {:
 	List<Comando> comandos =  new ArrayList<>();
+	
+	if(comando!=null){
 	comandos.add(comando);
+	}
+	
 	if(lista!=null){
 	comandos.addAll(lista);
 	}
+	
+	RESULT = comandos;
 :}
                  ;
 
@@ -400,4 +418,6 @@ expr_basica ::= ABRE_PAR expressao FECHA_PAR
          :}
          | chamada_func
          ;
+
+
 

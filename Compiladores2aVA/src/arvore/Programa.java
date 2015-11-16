@@ -21,7 +21,12 @@ public class Programa {
 	public void setDeclaracoes(List<DeclGlobal> declaracoes) {
 		this.declaracoes = declaracoes;
 	}
+
+	@Override
+	public String toString() {
+		return "Programa [declaracoes=" + declaracoes + "]";
+	}
 	
-	
+
 
 }
