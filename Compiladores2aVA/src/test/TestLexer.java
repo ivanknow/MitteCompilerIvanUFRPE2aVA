@@ -23,7 +23,7 @@ public class TestLexer {
 
 		// passa a entrada padrão (primeira linha) ou um arquivo (segunda linha) para o lexer
 		//lexer = new Lexer(System.in);
-		lexer = new Lexer(new FileInputStream("exemplo3.txt"));
+		lexer = new Lexer(new FileInputStream("exemplo.mitte"));
 		
 		do {
 			token = lexer.next_token();

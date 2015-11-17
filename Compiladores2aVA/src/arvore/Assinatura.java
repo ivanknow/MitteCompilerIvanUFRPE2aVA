@@ -1,20 +1,22 @@
 package arvore;
 
+import java.util.List;
+
 import arvore.expressao.Identificador;
 
 public class Assinatura {
 	Identificador identificador;
 	Tipo tipo;
-	ParametrosFormais parametros;
+	List<Identificador> parametros;
 
-	public Assinatura(Identificador identificador, ParametrosFormais parametros, Tipo tipo) {
+	public Assinatura(Identificador identificador, List parametros, Tipo tipo) {
 		super();
 		this.identificador = identificador;
 		this.tipo = tipo;
 		this.parametros = parametros;
 	}
 
-	public Assinatura(Identificador identificador, ParametrosFormais parametros) {
+	public Assinatura(Identificador identificador, List parametros) {
 		super();
 		this.identificador = identificador;
 		this.parametros = parametros;
@@ -23,5 +25,12 @@ public class Assinatura {
 	public Assinatura() {
 
 	}
+
+	@Override
+	public String toString() {
+		return "Assinatura [identificador=" + identificador + ", tipo=" + tipo + ", parametros=" + parametros + "]";
+	}
+	
+	
 
 }

@@ -14,6 +14,11 @@ public class DeclFuncao implements DeclGlobal {
 	public DeclFuncao() {
 		
 	}
+
+	@Override
+	public String toString() {
+		return "DeclFuncao [bloco=" + bloco + ", assinatura=" + assinatura + "]";
+	}
 	
 	
 }

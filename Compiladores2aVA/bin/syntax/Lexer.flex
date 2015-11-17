@@ -8,6 +8,8 @@ import java_cup.runtime.*;
 %public
 
 %cup
+%line
+%column
 
 whiteSpace=([ \n\t\f\r]+)
 letra=[a-zA-Z]

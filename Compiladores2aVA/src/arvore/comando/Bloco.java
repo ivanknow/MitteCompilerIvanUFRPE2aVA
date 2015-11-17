@@ -22,4 +22,11 @@ public class Bloco implements Comando {
 		this.comandos = comandos;
 	}
 
+	@Override
+	public String toString() {
+		return "\nBloco [comandos=" + comandos + "]";
+	}
+	
+	
+
 }

@@ -82,8 +82,7 @@ non terminal List<Identificador> resto_lista_idents;
 non terminal Tipo tipo;
 non terminal DeclFuncao decl_funcao;
 non terminal Assinatura assinatura;
-non terminal ParametrosFormais param_formais;
-non terminal List resto_param_formais;
+non terminal List param_formais;
 non terminal Bloco bloco;
 non terminal List<Comando> lista_comandos;
 non terminal Comando comando;
@@ -183,79 +182,54 @@ decl_funcao ::= assinatura:ass bloco:bloco
 RESULT = new DeclFuncao(ass,bloco);
 :} ;
 
-assinatura ::= KEY_DEF IDENTIFICADOR:ident ABRE_PAR param_formais:param FECHA_PAR DOIS_PONTOS tipo:tipo
+assinatura ::= KEY_DEF IDENTIFICADOR:ident ABRE_PAR param_formais:paramFormais FECHA_PAR DOIS_PONTOS tipo:tipo
 			{:
 				Identificador i = new Identificador(ident);
-				RESULT = new Assinatura(i,param,tipo);
+				RESULT = new Assinatura(i,paramFormais,tipo);
 			:}
-             | KEY_DEF IDENTIFICADOR:ident ABRE_PAR param_formais:param FECHA_PAR
+             | KEY_DEF IDENTIFICADOR:ident ABRE_PAR param_formais:paramFormais FECHA_PAR
              {:
              	Identificador i = new Identificador(ident);
-				RESULT = new Assinatura(i,param);
+				RESULT = new Assinatura(i,paramFormais);
 			:}
              ;
 
-param_formais ::= IDENTIFICADOR:ident DOIS_PONTOS tipo:tipo resto_param_formais:paramList 
+param_formais ::= IDENTIFICADOR:ident DOIS_PONTOS tipo:tipo param_formais:paramFormais
 				{:
-				ParametrosFormais parametros = new ParametrosFormais();
-               
 				Identificador i = new Identificador(ident);
 				
-				i.setTipo(tipo);
+				//i.setTipo(tipo);
 
-				paramList.add(i);
-					
-				parametros.setParametros(paramList);
-				
-				 RESULT = parametros;
+				paramFormais.add(i);
+			
+				RESULT = paramFormais;
 				:}
                 | /*vazio*/ 
                 {:
-                ParametrosFormais parametros = new ParametrosFormais();
-                RESULT = parametros;
+               
+                RESULT = new ArrayList<Identificador>();
                 :}
                 ;
-                  
-resto_param_formais ::= VIRGULA IDENTIFICADOR:ident DOIS_PONTOS tipo:tipo resto_param_formais:param
-					{:
-					
-					Identificador i = new Identificador(ident);
-					
-					i.setTipo(tipo);
-	
-					param.add(i);
-							
-					RESULT = param;
-					:}
-                    | /*vazio*/
-                    {:
-                      RESULT =  new ArrayList<Identificador>();
-                    :}
-                      ; 
 
 bloco ::= ABRE_CHAVE lista_comandos:lista FECHA_CHAVE
-{:
-Bloco bloco = new Bloco();
-bloco.getComandos().addAll(lista);
-
-RESULT = bloco;
-:}
- ;
+		{:
+		Bloco bloco = new Bloco();
+		bloco.getComandos().addAll(lista);
+		
+		RESULT = bloco;
+		:}
+		 ;
 
 lista_comandos ::= lista_comandos:lista comando:comando
-{:
-	List<Comando> comandos =  new ArrayList<>();
-	
-	if(comando!=null){
-	comandos.add(comando);
-	}
-	
-	if(lista!=null){
-	comandos.addAll(lista);
-	}
-	
-	RESULT = comandos;
-:}
+				{:
+					lista.add(comando);
+					
+					RESULT = lista;
+				:}
+				|/*vazio*/
+				{:
+				RESULT =  new ArrayList<Comando>();
+				:}
                  ;
 
 comando  ::= decl_variavel:cmd
