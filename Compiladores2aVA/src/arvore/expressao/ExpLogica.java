@@ -12,5 +12,11 @@ public class ExpLogica implements Expressao {
 	this.exp2 = e2;
 	this.operLogico = oper;
 	}
+
+
+	@Override
+	public String toString() {
+		return "\nExpLogica [exp1=" + exp1 + ", exp2=" + exp2 + ", operLogico=" + operLogico + "]";
+	}
 	
 }

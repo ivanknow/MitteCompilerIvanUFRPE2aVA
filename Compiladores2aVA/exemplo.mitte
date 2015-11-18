@@ -1,16 +1,28 @@
-def main()  {
-   n, nRebuilt : int;    msg : string;  
-   n = 51423;  ## numero a ser testado   
-   
-    (* A divisao de inteiros arredonda para baixo (em caso
-     de divisao inexata). Assim, numeros impares        
-    ficarao com uma unidade a menos do valor inicial. *) 
-   
-   nRebuilt = (n / 2) * 2;  
-   if ( n == nRebuilt )
-          msg = "par:\n";
-   else       
-   		msg = "impar";  
-   
-   print(msg);  
-   }  
+def main() 
+{ 
+   x, y : int; 
+   m :int; 
+   x = 120;  (* dois valores a partir dos quais *) 
+   y = 640;  (* sera calculado o m.d.c.         *) 
+   m = mdcEuclides(x, y); 
+
+print ("mdc(");
+print( x ); 
+print(","); 
+print( y ); 
+print("):"); 
+print( m ) ;
+}
+ 
+def mdcEuclides(x:int, y:int) :int { 
+
+if (y == 0) { 
+return x;     
+} 
+else { 
+
+return mdcEuclides(y, x % y); 
+
+} 
+
+} 

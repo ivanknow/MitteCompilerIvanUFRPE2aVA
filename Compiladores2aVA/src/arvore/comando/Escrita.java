@@ -8,4 +8,11 @@ public class Escrita implements Comando {
 	public Escrita(Expressao expressao) {
 		this.expressao = expressao;
 	}
+
+	@Override
+	public String toString() {
+		return "\n Escrita [expressao=" + expressao + "]";
+	}
+	
+	
 }

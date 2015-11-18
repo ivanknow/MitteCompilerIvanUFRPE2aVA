@@ -14,6 +14,10 @@ public class Atribuicao implements Comando{
 		this.listaIdents = listaIdents;
 		this.expressao = expressao;
 	}
+	@Override
+	public String toString() {
+		return "\nAtribuicao [listaIdents=" + listaIdents + ", expressao=" + expressao + "]";
+	}
 	
 
 	

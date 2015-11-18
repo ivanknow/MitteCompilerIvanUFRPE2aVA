@@ -28,7 +28,7 @@ public class Assinatura {
 
 	@Override
 	public String toString() {
-		return "Assinatura [identificador=" + identificador + ", tipo=" + tipo + ", parametros=" + parametros + "]";
+		return "\nAssinatura [identificador=" + identificador + ", tipo=" + tipo + ", parametros=" + parametros + "]";
 	}
 	
 	

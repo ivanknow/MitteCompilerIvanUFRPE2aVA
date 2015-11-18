@@ -11,6 +11,10 @@ public class Iteracao implements Comando {
 		this.expressao = expressao;
 		this.comando = comando;
 	}
+	@Override
+	public String toString() {
+		return "\n Iteracao [expressao=" + expressao + ", comando=" + comando + "]";
+	}
 	
 	
 	

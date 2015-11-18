@@ -12,6 +12,11 @@ public class ExpAritmetica implements Expressao{
 		this.exp2 = exp2;
 		this.operacao = operacao;
 	}
+
+	@Override
+	public String toString() {
+		return "ExpAritmetica [exp1=" + exp1 + ", exp2=" + exp2 + ", operacao=" + operacao + "]";
+	}
 	
 	
 }

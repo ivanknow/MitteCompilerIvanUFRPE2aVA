@@ -11,6 +11,11 @@ public class ExprRelacional implements Expressao {
 		this.expr = expr;
 		this.expr2 = expr2;
 	}
+
+	@Override
+	public String toString() {
+		return "\nExprRelacional [expr=" + expr + ", expr2=" + expr2 + ", operador=" + operador + "]";
+	}
 	
 	
 
