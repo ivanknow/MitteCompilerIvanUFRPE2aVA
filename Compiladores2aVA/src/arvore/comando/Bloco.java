@@ -3,6 +3,8 @@ package arvore.comando;
 import java.util.ArrayList;
 import java.util.List;
 
+import semantica.SemanticalException;
+
 public class Bloco implements Comando {
 	private List<Comando> comandos;
 	
@@ -25,6 +27,12 @@ public class Bloco implements Comando {
 	@Override
 	public String toString() {
 		return "\nBloco [comandos=" + comandos + "]";
+	}
+
+	@Override
+	public Object analyse() throws SemanticalException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

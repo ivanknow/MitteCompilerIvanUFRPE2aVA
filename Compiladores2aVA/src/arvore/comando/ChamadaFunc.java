@@ -3,6 +3,7 @@ package arvore.comando;
 import java.util.List;
 
 import arvore.expressao.Expressao;
+import semantica.SemanticalException;
 
 public class ChamadaFunc implements Comando {
 	private String nomeFuncao;
@@ -24,6 +25,11 @@ public class ChamadaFunc implements Comando {
 	}
 	public void setListaExprs(List<Expressao> listaExprs) {
 		this.listaExprs = listaExprs;
+	}
+	@Override
+	public Object analyse() throws SemanticalException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

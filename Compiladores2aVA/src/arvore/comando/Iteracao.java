@@ -1,6 +1,7 @@
 package arvore.comando;
 
 import arvore.expressao.Expressao;
+import semantica.SemanticalException;
 
 public class Iteracao implements Comando {
 	
@@ -14,6 +15,11 @@ public class Iteracao implements Comando {
 	@Override
 	public String toString() {
 		return "\n Iteracao [expressao=" + expressao + ", comando=" + comando + "]";
+	}
+	@Override
+	public Object analyse() throws SemanticalException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

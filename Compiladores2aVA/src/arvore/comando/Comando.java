@@ -1,6 +1,8 @@
 package arvore.comando;
 
-public interface Comando {
+import semantica.SemanticallyAnalyzable;
+
+public interface Comando extends SemanticallyAnalyzable {
 
 
 }

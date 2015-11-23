@@ -1,5 +1,6 @@
 package arvore.expressao;
 
+import semantica.SemanticalException;
 
 public class ExpAritmetica implements Expressao{
 
@@ -16,6 +17,12 @@ public class ExpAritmetica implements Expressao{
 	@Override
 	public String toString() {
 		return "ExpAritmetica [exp1=" + exp1 + ", exp2=" + exp2 + ", operacao=" + operacao + "]";
+	}
+
+	@Override
+	public Object analyse() throws SemanticalException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

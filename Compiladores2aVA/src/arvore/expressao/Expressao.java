@@ -1,5 +1,7 @@
 package arvore.expressao;
 
-public interface Expressao {
+import semantica.SemanticallyAnalyzable;
+
+public interface Expressao extends SemanticallyAnalyzable{
 
 }

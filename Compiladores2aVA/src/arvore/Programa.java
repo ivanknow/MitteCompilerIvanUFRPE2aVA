@@ -3,13 +3,16 @@ package arvore;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Programa {
+import semantica.SemanticalException;
+import semantica.SemanticallyAnalyzable;
+
+public class Programa implements SemanticallyAnalyzable {
 	private List<DeclGlobal> declaracoes;
-	
+
 	public Programa() {
 		declaracoes = new ArrayList<>();
 	}
-	
+
 	public void add(DeclGlobal dec) {
 		this.declaracoes.add(dec);
 	}
@@ -26,7 +29,15 @@ public class Programa {
 	public String toString() {
 		return "Programa [declaracoes=" + declaracoes + "]";
 	}
-	
 
+	@Override
+	public Object analyse() throws SemanticalException {
+		for (DeclGlobal d : declaracoes) {
+			d.analyse();
+
+		}
+
+		return Boolean.TRUE;
+	}
 
 }

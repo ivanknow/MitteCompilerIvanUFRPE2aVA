@@ -83,6 +83,7 @@ non terminal Tipo tipo;
 non terminal DeclFuncao decl_funcao;
 non terminal Assinatura assinatura;
 non terminal List param_formais;
+non terminal List resto_param_formais;
 non terminal Bloco bloco;
 non terminal List<Comando> lista_comandos;
 non terminal Comando comando;
@@ -194,7 +195,24 @@ assinatura ::= KEY_DEF IDENTIFICADOR:ident ABRE_PAR param_formais:paramFormais F
 			:}
              ;
 
-param_formais ::= IDENTIFICADOR:ident DOIS_PONTOS tipo:tipo param_formais:paramFormais
+param_formais ::= IDENTIFICADOR:ident DOIS_PONTOS tipo:tipo resto_param_formais:paramFormais
+				{:
+				Identificador i = new Identificador(ident);
+				
+				//i.setTipo(tipo);
+
+				paramFormais.add(i);
+			
+				RESULT = paramFormais;
+				:}
+                | /*vazio*/ 
+                {:
+               
+                RESULT = new ArrayList<Identificador>();
+                :}
+                ;
+                
+resto_param_formais ::= VIRGULA IDENTIFICADOR:ident DOIS_PONTOS tipo:tipo resto_param_formais:paramFormais
 				{:
 				Identificador i = new Identificador(ident);
 				

@@ -1,6 +1,7 @@
 package arvore.expressao;
 
 import arvore.Tipo;
+import semantica.SemanticalException;
 
 public class Identificador implements Expressao {
 	private String label, escopo, retorno;
@@ -46,6 +47,12 @@ public class Identificador implements Expressao {
 	public String toString() {
 		return "\nIdentificador [label=" + label + ", escopo=" + escopo
 				+ ", retorno=" + retorno + ", tipo=" + tipo + "]";
+	}
+
+	@Override
+	public Object analyse() throws SemanticalException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

@@ -1,6 +1,7 @@
 package arvore.comando;
 
 import arvore.expressao.Expressao;
+import semantica.SemanticalException;
 
 public class Decisao implements Comando {
 	private Expressao expressao;
@@ -22,6 +23,12 @@ public class Decisao implements Comando {
 	public Decisao(Expressao expr, Comando cmdIf) {
 		this.expressao = expr;
 		this.comandoIf = cmdIf;
+	}
+
+	@Override
+	public Object analyse() throws SemanticalException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
