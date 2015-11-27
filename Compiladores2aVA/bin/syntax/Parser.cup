@@ -383,8 +383,14 @@ expressao ::= expressao SOMA expressao
         ;
 
 expr_basica ::= ABRE_PAR expressao FECHA_PAR 
-         | NOT expr_basica
-         | SUB expr_basica
+         | NOT expr_basica:exp
+         {:
+         RESULT = new ExpUnaria("NOT",exp);
+         :}
+         | SUB expr_basica:exp
+         {:
+         RESULT = new ExpUnaria("-",exp);
+         :}
          | INT_LITERAL:lex
          {:  
          int valor =  Integer.parseInt(lex);
@@ -410,6 +416,3 @@ expr_basica ::= ABRE_PAR expressao FECHA_PAR
          :}
          | chamada_func
          ;
-
-
-
