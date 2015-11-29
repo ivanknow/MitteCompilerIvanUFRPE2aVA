@@ -12,8 +12,8 @@ public class ChamadaFuncCmd implements Comando {
 
 	@Override
 	public Object analyse() throws SemanticalException {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return chamada.analyse();
 	}
 	
 }

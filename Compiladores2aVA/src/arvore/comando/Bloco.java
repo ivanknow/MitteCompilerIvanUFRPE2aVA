@@ -3,6 +3,7 @@ package arvore.comando;
 import java.util.ArrayList;
 import java.util.List;
 
+import arvore.Tipo;
 import semantica.SemanticalException;
 
 public class Bloco implements Comando {
@@ -31,8 +32,10 @@ public class Bloco implements Comando {
 
 	@Override
 	public Object analyse() throws SemanticalException {
-		// TODO Auto-generated method stub
-		return null;
+		for(Comando c:comandos){
+			c.analyse();
+		}
+		return Tipo.VOID;
 	}
 	
 	

@@ -1,5 +1,6 @@
 package arvore.comando;
 
+import arvore.Tipo;
 import arvore.expressao.Expressao;
 import semantica.SemanticalException;
 
@@ -9,7 +10,7 @@ public class Decisao implements Comando {
 	private Comando comandoElse;
 
 	/**
-	 * Construtor para if-else completo. 
+	 * Construtor para if-else completo.
 	 */
 	public Decisao(Expressao expr, Comando cmdIf, Comando cmdElse) {
 		this.expressao = expr;
@@ -18,7 +19,7 @@ public class Decisao implements Comando {
 	}
 
 	/**
-	 * Construtor para if sem else. 
+	 * Construtor para if sem else.
 	 */
 	public Decisao(Expressao expr, Comando cmdIf) {
 		this.expressao = expr;
@@ -27,8 +28,16 @@ public class Decisao implements Comando {
 
 	@Override
 	public Object analyse() throws SemanticalException {
-		// TODO Auto-generated method stub
-		return null;
+		Tipo tipoExp = (Tipo) expressao.analyse();
+		if (tipoExp != Tipo.BOOLEAN) {
+			throw new SemanticalException("Expressao deve ser BOOLEAN");
+		}
+		comandoIf.analyse();
+		if (comandoElse != null) {
+			comandoElse.analyse();
+		}
+
+		return Tipo.VOID;
 	}
 
 }

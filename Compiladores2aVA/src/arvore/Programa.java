@@ -37,7 +37,7 @@ public class Programa implements SemanticallyAnalyzable {
 
 		}
 
-		return Boolean.TRUE;
+		return Tipo.VOID;
 	}
 
 }

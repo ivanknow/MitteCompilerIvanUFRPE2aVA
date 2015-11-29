@@ -1,5 +1,6 @@
 package arvore.comando;
 
+import arvore.Tipo;
 import arvore.expressao.Expressao;
 import semantica.SemanticalException;
 
@@ -18,8 +19,12 @@ public class Iteracao implements Comando {
 	}
 	@Override
 	public Object analyse() throws SemanticalException {
-		// TODO Auto-generated method stub
-		return null;
+		Tipo tipoExp = (Tipo)expressao.analyse();
+		if(tipoExp != Tipo.BOOLEAN){
+			throw new SemanticalException("Condicao do laco deve ser BOOLEAN");
+		}
+		comando.analyse();
+		return Tipo.VOID;
 	}
 	
 	

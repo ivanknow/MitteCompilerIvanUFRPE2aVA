@@ -3,7 +3,9 @@ package arvore;
 import java.util.List;
 
 import arvore.expressao.Identificador;
+import semantica.SemanticItem;
 import semantica.SemanticalException;
+import semantica.TabelaEscopo;
 
 public class DeclVariavel implements DeclGlobal {
 	Tipo tipo;
@@ -38,8 +40,13 @@ public class DeclVariavel implements DeclGlobal {
 
 	@Override
 	public Object analyse() throws SemanticalException {
-		// TODO Auto-generated method stub
-		return null;
+		TabelaEscopo t = TabelaEscopo.getInstance();
+		for (Identificador i : ident) {
+
+			t.addItem(i.getLabel(), new SemanticItem(tipo));
+
+		}
+		return Tipo.VOID;
 	}
 
 }

@@ -2,6 +2,7 @@ package arvore.expressao;
 
 import arvore.Tipo;
 import semantica.SemanticalException;
+import semantica.TabelaEscopo;
 
 public class Identificador implements Expressao {
 	private String label, escopo, retorno;
@@ -51,8 +52,12 @@ public class Identificador implements Expressao {
 
 	@Override
 	public Object analyse() throws SemanticalException {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if(tipo==null){//caso seja uma utilizacao
+			TabelaEscopo tabela = TabelaEscopo.getInstance();
+			tipo = tabela.getType(label).tipo;
+		}
+			return this.tipo;
 	}
 
 	

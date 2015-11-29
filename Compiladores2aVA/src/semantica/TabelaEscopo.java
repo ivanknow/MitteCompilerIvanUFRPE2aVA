@@ -8,49 +8,72 @@ import arvore.Tipo;
 
 public class TabelaEscopo {
 	private static TabelaEscopo instance;
-	
-	private ArrayList<Map<String,Tipo>> pilhaEscopo;
+
+	private ArrayList<Map<String, SemanticItem>> pilhaEscopo;
 
 	static {
-	
+
 	}
+
 	private TabelaEscopo() {
 	}
 
-	public static TabelaEscopo getInstance(){
+	public void addItem(String label, SemanticItem item) throws SemanticalException {
+		Map<String, SemanticItem> escopo = getEscopoAtual();
+		if (escopo.containsKey(label)) {
+			throw new SemanticalException("Variavel '" + label + "' ja foi declarada nesse escopo");
+		} else {
+			escopo.put(label, item);
+		}
+	}
 
-		if(instance == null) 
-		{
+	private Map<String, SemanticItem> getEscopoAtual() {
+		return pilhaEscopo.get(pilhaEscopo.size() - 1);
+	}
+
+	public static TabelaEscopo getInstance() {
+
+		if (instance == null) {
 			inicializaInstancia();
 
 		}
 		return instance;
 
 	}
-	
-	public Tipo getType (String label){
-		//verifica a tabela de cima e depois a de baixo
-		//caso encontre retorna caso não retora null ou excecao
-		return null;
-	}
-	
-	public void criaNovoEscopo (){
-		//TODO armazena a função no escopo principal
-		//cria novo escopo
-		//adiciona parametros no novo escopo
-	}
-	
-	public void removeEscopo(){
-		instance.pilhaEscopo.remove(1);
+
+	public SemanticItem getType(String label) throws SemanticalException {
+		// verifica a tabela de cima e depois a de baixo
+		if (getEscopoAtual().containsKey(label)) {
+			return getEscopoAtual().get(label);
+		} else {
+			if (pilhaEscopo.size() > 1) {
+				if (pilhaEscopo.get(0).containsKey(label)) {
+					return pilhaEscopo.get(0).get(label);
+				}
+			}
+
+		}
+		throw new SemanticalException("Variavel '" + label + "' não foi declarada ainda");
+
 	}
 
-	private static synchronized void inicializaInstancia() 
-	{
-		if (instance == null) 
-		{
+	public void criaNovoEscopo() {
+		if (pilhaEscopo.size() > 1) {
+			pilhaEscopo.remove(1);
+		}
+		pilhaEscopo.add(new HashMap<String, SemanticItem>());
+	}
+
+	public void removeEscopo() {
+		if (pilhaEscopo.size() > 1)
+			instance.pilhaEscopo.remove(1);
+	}
+
+	private static synchronized void inicializaInstancia() {
+		if (instance == null) {
 			instance = new TabelaEscopo();
 			instance.pilhaEscopo = new ArrayList<>();
-			instance.pilhaEscopo.add(new HashMap<String,Tipo>());
+			instance.pilhaEscopo.add(new HashMap<String, SemanticItem>());
 		}
 	}
 }

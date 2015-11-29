@@ -1,5 +1,6 @@
 package arvore.expressao;
 
+import arvore.Tipo;
 import semantica.SemanticalException;
 
 public class ExpLogica implements Expressao {
@@ -23,8 +24,14 @@ public class ExpLogica implements Expressao {
 
 	@Override
 	public Object analyse() throws SemanticalException {
-		// TODO Auto-generated method stub
-		return null;
+		//tratar se tipo eh boolean
+		Tipo tipoE1 = (Tipo) exp1.analyse();
+		Tipo tipoE2 = (Tipo) exp2.analyse();
+		
+		if (tipoE1!= Tipo.BOOLEAN || tipoE2 != Tipo.BOOLEAN) {
+			throw new SemanticalException("Relacionais devem ser aplicadas apenas a INT e FLOAT");
+		}
+		return Tipo.BOOLEAN;
 	}
 	
 }

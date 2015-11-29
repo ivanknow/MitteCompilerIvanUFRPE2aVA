@@ -1,5 +1,6 @@
 package arvore.expressao;
 
+import arvore.Tipo;
 import semantica.SemanticalException;
 
 public class CharLiteral implements Expressao {
@@ -9,7 +10,6 @@ public class CharLiteral implements Expressao {
 	}
 	@Override
 	public Object analyse() throws SemanticalException {
-		// TODO Auto-generated method stub
-		return null;
+		return Tipo.CHAR;
 	}
 }

@@ -3,6 +3,7 @@ package arvore;
 import arvore.comando.Bloco;
 import semantica.SemanticalException;
 import semantica.SemanticallyAnalyzable;
+import semantica.TabelaEscopo;
 
 public class DeclFuncao implements DeclGlobal,SemanticallyAnalyzable {
 	private Bloco bloco;
@@ -24,8 +25,13 @@ public class DeclFuncao implements DeclGlobal,SemanticallyAnalyzable {
 
 	@Override
 	public Object analyse() throws SemanticalException {
+		TabelaEscopo t = TabelaEscopo.getInstance();
+		
 		assinatura.analyse();
+		
 		bloco.analyse();
+		//remove escopo 2 da pilha
+		t.removeEscopo();
 		return null;
 	}
 	

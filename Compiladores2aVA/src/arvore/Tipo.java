@@ -4,5 +4,7 @@ public enum Tipo {
 	INT, 
 	CHAR, 
 	FLOAT, 
-	STRING
+	STRING,
+	BOOLEAN,
+	VOID
 }

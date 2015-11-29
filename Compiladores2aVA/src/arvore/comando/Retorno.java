@@ -1,5 +1,6 @@
 package arvore.comando;
 
+import arvore.Tipo;
 import arvore.expressao.Expressao;
 import semantica.SemanticalException;
 
@@ -12,8 +13,12 @@ public class Retorno implements Comando {
 
 	@Override
 	public Object analyse() throws SemanticalException {
-		// TODO Auto-generated method stub
-		return null;
+		Tipo tipoExp = (Tipo)expressao.analyse();
+		
+		if(tipoExp == Tipo.VOID){
+			throw new SemanticalException("Nao é possivel retornar VOID");
+		}
+		return tipoExp;
 	}
 	
 }

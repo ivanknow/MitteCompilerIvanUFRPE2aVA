@@ -1,5 +1,6 @@
 package arvore.expressao;
 
+import arvore.Tipo;
 import semantica.SemanticalException;
 
 public class ExpAritmetica implements Expressao{
@@ -21,8 +22,18 @@ public class ExpAritmetica implements Expressao{
 
 	@Override
 	public Object analyse() throws SemanticalException {
-		// TODO Auto-generated method stub
-		return null;
+		Tipo tipoE1 = (Tipo) exp1.analyse();
+		Tipo tipoE2 = (Tipo) exp2.analyse();
+		if (tipoE1 != Tipo.INT && tipoE1 != Tipo.FLOAT) {
+			throw new SemanticalException("Aritmeticas devem ser aplicadas apenas a INT e FLOAT");
+		}
+		if (tipoE2 != Tipo.INT && tipoE2 != Tipo.FLOAT) {
+			throw new SemanticalException("Aritmeticas devem ser aplicadas apenas a INT e FLOAT");
+		}
+		if (tipoE1 !=  tipoE2) {
+			throw new SemanticalException("Tipos dos operandos diferem");
+		}
+		return tipoE1;
 	}
 	
 	
