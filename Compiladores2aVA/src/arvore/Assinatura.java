@@ -12,7 +12,7 @@ import semantica.TabelaEscopo;
 
 public class Assinatura implements SemanticallyAnalyzable {
 	Identificador identificador;
-	Tipo tipo;
+	Tipo tipo = Tipo.VOID;
 	List<Identificador> parametros;
 
 	public Assinatura(Identificador identificador, List parametros, Tipo tipo) {

@@ -34,7 +34,6 @@ public class Atribuicao implements Comando {
 			}
 		}
 		TabelaEscopo tabela = TabelaEscopo.getInstance();
-		System.out.println(tabela);
 		return Tipo.VOID;
 	}
 

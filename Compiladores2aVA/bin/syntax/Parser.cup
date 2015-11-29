@@ -199,7 +199,7 @@ param_formais ::= IDENTIFICADOR:ident DOIS_PONTOS tipo:tipo resto_param_formais:
 				{:
 				Identificador i = new Identificador(ident);
 				
-				//i.setTipo(tipo);
+				i.setTipo(tipo);
 
 				paramFormais.add(i);
 			
@@ -216,7 +216,7 @@ resto_param_formais ::= VIRGULA IDENTIFICADOR:ident DOIS_PONTOS tipo:tipo resto_
 				{:
 				Identificador i = new Identificador(ident);
 				
-				//i.setTipo(tipo);
+				i.setTipo(tipo);
 
 				paramFormais.add(i);
 			
@@ -414,5 +414,8 @@ expr_basica ::= ABRE_PAR expressao FECHA_PAR
          //TODO verificar se simbolo esta na tabela
          RESULT = new Identificador(lexema);
          :}
-         | chamada_func
+         | chamada_func:cmd
+         {:
+         RESULT = cmd;
+         :}
          ;

@@ -32,7 +32,7 @@ public class DeclFuncao implements DeclGlobal,SemanticallyAnalyzable {
 		bloco.analyse();
 		//remove escopo 2 da pilha
 		t.removeEscopo();
-		return null;
+		return Tipo.VOID;
 	}
 	
 	

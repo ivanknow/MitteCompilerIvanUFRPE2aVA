@@ -8,7 +8,7 @@ import semantica.SemanticFunctionItem;
 import semantica.SemanticalException;
 import semantica.TabelaEscopo;
 
-public class ChamadaFunc implements Comando {
+public class ChamadaFunc implements Comando,Expressao {
 	private String nomeFuncao;
 	private List<Expressao> listaExprs;
 

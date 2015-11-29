@@ -36,7 +36,7 @@ public class Programa implements SemanticallyAnalyzable {
 			d.analyse();
 
 		}
-
+		System.out.println("Não foram encontrados erros na Análise Semantica");
 		return Tipo.VOID;
 	}
 

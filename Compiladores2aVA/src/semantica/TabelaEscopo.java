@@ -25,6 +25,7 @@ public class TabelaEscopo {
 		} else {
 			escopo.put(label, item);
 		}
+		System.out.println(this);
 	}
 
 	private Map<String, SemanticItem> getEscopoAtual() {
@@ -62,11 +63,13 @@ public class TabelaEscopo {
 			pilhaEscopo.remove(1);
 		}
 		pilhaEscopo.add(new HashMap<String, SemanticItem>());
+		System.out.println(this);
 	}
 
 	public void removeEscopo() {
 		if (pilhaEscopo.size() > 1)
 			instance.pilhaEscopo.remove(1);
+		System.out.println(this);
 	}
 
 	private static synchronized void inicializaInstancia() {
@@ -76,4 +79,11 @@ public class TabelaEscopo {
 			instance.pilhaEscopo.add(new HashMap<String, SemanticItem>());
 		}
 	}
+
+	@Override
+	public String toString() {
+		return "TabelaEscopo [pilhaEscopo=" + pilhaEscopo + "]";
+	}
+	
+
 }

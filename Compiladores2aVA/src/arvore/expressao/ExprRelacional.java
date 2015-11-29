@@ -23,13 +23,13 @@ public class ExprRelacional implements Expressao {
 	public Object analyse() throws SemanticalException {
 		// tratar se tipo eh int ou float
 		if (expr.analyse() != Tipo.INT && expr.analyse() != Tipo.FLOAT) {
-			throw new SemanticalException("Relacionais devem ser aplicadas apenas a INT e FLOAT");
+			throw new SemanticalException("Relacionais devem ser aplicadas apenas a INT e FLOAT :"+expr);
 		}
 		if (expr2.analyse() != Tipo.INT && expr2.analyse() != Tipo.FLOAT) {
-			throw new SemanticalException("Relacionais devem ser aplicadas apenas a INT e FLOAT");
+			throw new SemanticalException("Relacionais devem ser aplicadas apenas a INT e FLOAT"+expr2);
 		}
 		if (expr.analyse() !=  expr2.analyse()) {
-			throw new SemanticalException("Tipos dos operandos diferem");
+			throw new SemanticalException("Tipos dos operandos diferem"+expr+":"+expr2);
 		}
 		return Tipo.BOOLEAN;
 	}

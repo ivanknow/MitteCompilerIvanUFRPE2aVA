@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import arvore.Programa;
+import semantica.SemanticalException;
 import syntax.Lexer;
 import syntax.Parser;
 
@@ -37,9 +38,14 @@ public class TestParser {
 			parser = new Parser(lexer);
 
 			Programa p = (Programa)parser.parse().value;
-			System.out.println("\nSintaxe OK!\n"+p);
+			//System.out.println("\nSintaxe OK!\n"+p);
+			p.analyse();
 		
-		} catch (Exception e) {
+		}catch (SemanticalException e) {
+			System.out.println("\nErro semantico!"+e.getMessage());
+			e.printStackTrace();
+		} 
+		catch (Exception e) {
 			System.out.println("\nErro sintático!"+e.getMessage());
 			e.printStackTrace();
 		}
