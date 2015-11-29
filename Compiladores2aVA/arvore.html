@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<script src="go-debug.js"></script>
+<title>Insert title here</title>
+</head>
+<body>
+<div id="myDiagramDiv"
+     style="width:800px; height:600px; background-color: #DAE4E4;"></div>
+     
+ <script type="text/javascript">
+ 
+ 
+ var $ = go.GraphObject.make;
+ var myDiagram =
+   $(go.Diagram, "myDiagramDiv",
+     {
+       initialContentAlignment: go.Spot.Center, // center Diagram contents
+       "undoManager.isEnabled": true, // enable Ctrl-Z to undo and Ctrl-Y to redo
+       layout: $(go.TreeLayout, // specify a Diagram.layout that arranges trees
+                 { angle: 90, layerSpacing: 35 })
+     });
+
+ // the template we defined earlier
+ myDiagram.nodeTemplate =
+   $(go.Node, "Horizontal",
+     { background: "#FF0000" },
+    
+     $(go.TextBlock, "Default Text",
+       { margin: 12, stroke: "white", font: "bold 16px sans-serif" },
+       new go.Binding("text", "name"))
+   );
+
+ var model = $(go.TreeModel);
+
+ </script>    
+ <script src="arvore.js"></script>
+</body>
+</html>
