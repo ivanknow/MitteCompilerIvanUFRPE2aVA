@@ -21,10 +21,10 @@ public class Iteracao implements Comando {
 	public Object analyse() throws SemanticalException {
 		Tipo tipoExp = (Tipo)expressao.analyse();
 		if(tipoExp != Tipo.BOOLEAN){
-			throw new SemanticalException("Condicao do laco deve ser BOOLEAN");
+			throw new SemanticalException("Condicao do laço deve ser BOOLEAN");
 		}
-		comando.analyse();
-		return Tipo.VOID;
+		;
+		return comando.analyse();
 	}
 	
 	

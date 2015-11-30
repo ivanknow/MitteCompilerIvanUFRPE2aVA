@@ -367,17 +367,17 @@ expressao ::= expressao SOMA expressao
         | expressao:esq OR:lex expressao:dir
         {: RESULT = new ExpLogica(esq,dir,"OR");:}
         | expressao:esq OP_IGUAL expressao:dir
-        {: RESULT = new ExprRelacional(esq,dir);:}
+        {: RESULT = new ExprRelacional(esq,dir,"OP_IGUAL");:}
         | expressao:esq OP_DIFERENTE expressao:dir
-        {: RESULT = new ExprRelacional(esq,dir);:}
+        {: RESULT = new ExprRelacional(esq,dir,"OP_DIFERENTE");:}
         | expressao:esq OP_MENOR_QUE expressao:dir
-        {: RESULT = new ExprRelacional(esq,dir);:}
+        {: RESULT = new ExprRelacional(esq,dir,"OP_MENOR_QUE");:}
         | expressao:esq OP_MENOR_OU_IGUAL expressao:dir
-        {: RESULT = new ExprRelacional(esq,dir);:}
+        {: RESULT = new ExprRelacional(esq,dir,"OP_MENOR_OU_IGUAL");:}
         | expressao:esq OP_MAIOR_OU_IGUAL expressao:dir
-        {: RESULT = new ExprRelacional(esq,dir);:}
+        {: RESULT = new ExprRelacional(esq,dir,"OP_MAIOR_OU_IGUAL");:}
         | expressao:esq OP_MAIOR_QUE expressao:dir
-        {: RESULT = new ExprRelacional(esq,dir);:}
+        {: RESULT = new ExprRelacional(esq,dir,"OP_MAIOR_QUE");:}
         | expr_basica:exp
         {:RESULT = exp;:}
         ;

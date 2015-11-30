@@ -8,11 +8,11 @@ import semantica.SemanticalException;
 
 public class Bloco implements Comando {
 	private List<Comando> comandos;
-	
+
 	public Bloco() {
 		this.comandos = new ArrayList<Comando>();
 	}
-	
+
 	public void add(Comando cmd) {
 		this.comandos.add(cmd);
 	}
@@ -20,7 +20,7 @@ public class Bloco implements Comando {
 	public List<Comando> getComandos() {
 		return comandos;
 	}
-	
+
 	public void setComandos(List<Comando> comandos) {
 		this.comandos = comandos;
 	}
@@ -32,12 +32,11 @@ public class Bloco implements Comando {
 
 	@Override
 	public Object analyse() throws SemanticalException {
-		for(Comando c:comandos){
-			c.analyse();
+		Tipo retorno = Tipo.VOID;
+		for (Comando c : comandos) {
+			retorno = (Tipo) c.analyse();
 		}
-		return Tipo.VOID;
+		return retorno;
 	}
-	
-	
 
 }

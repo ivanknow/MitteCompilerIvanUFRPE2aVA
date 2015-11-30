@@ -28,16 +28,23 @@ public class Decisao implements Comando {
 
 	@Override
 	public Object analyse() throws SemanticalException {
+		Tipo retorno = Tipo.VOID;
+		
 		Tipo tipoExp = (Tipo) expressao.analyse();
 		if (tipoExp != Tipo.BOOLEAN) {
 			throw new SemanticalException("Expressao deve ser BOOLEAN");
 		}
-		comandoIf.analyse();
+		retorno =(Tipo) comandoIf.analyse();
 		if (comandoElse != null) {
-			comandoElse.analyse();
+			
+			Tipo tipoElse = (Tipo)comandoElse.analyse();
+			if(tipoElse != retorno){
+				throw new SemanticalException("Blocos IF-ELSE devem posuir o mesmo tipo de retorno");
+			}
+			
 		}
 
-		return Tipo.VOID;
+		return retorno;
 	}
 
 }

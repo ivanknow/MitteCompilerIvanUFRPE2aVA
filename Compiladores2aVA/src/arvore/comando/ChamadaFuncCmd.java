@@ -1,5 +1,6 @@
 package arvore.comando;
 
+import arvore.Tipo;
 import semantica.SemanticalException;
 
 public class ChamadaFuncCmd implements Comando {
@@ -12,8 +13,8 @@ public class ChamadaFuncCmd implements Comando {
 
 	@Override
 	public Object analyse() throws SemanticalException {
-		
-		return chamada.analyse();
+		//TODO o call significa sem retorno?
+		return Tipo.VOID;
 	}
 	
 }
