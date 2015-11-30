@@ -1,3 +1,5 @@
+x:char;
+
 def mdcEuclides(x:int, y:int) :int { 
 
 if (y == 0) { 
@@ -5,7 +7,7 @@ return x;
 } 
 else { 
 
-call mdcEuclides(y, x % y); 
+return mdcEuclides(y, x % y); 
 
 } 
 

@@ -58,7 +58,7 @@ public class Assinatura implements SemanticallyAnalyzable {
 
 			tabela.addItem(i.getLabel(), new SemanticItem(i.getTipo()));
 		}
-		return Tipo.VOID;
+		return tipo;
 	}
 
 }

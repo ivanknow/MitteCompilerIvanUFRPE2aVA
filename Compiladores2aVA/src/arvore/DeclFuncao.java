@@ -27,12 +27,16 @@ public class DeclFuncao implements DeclGlobal,SemanticallyAnalyzable {
 	public Object analyse() throws SemanticalException {
 		TabelaEscopo t = TabelaEscopo.getInstance();
 		
-		assinatura.analyse();
+		Tipo tipoFunc = (Tipo)assinatura.analyse();
 		
-		bloco.analyse();
+		Tipo tipoRetorno =(Tipo)  bloco.analyse();
+		
+		if(tipoFunc != tipoRetorno){
+			throw new SemanticalException("O retorno da função possui um tipo diferente do tipo de declaracao");
+		}
 		//remove escopo 2 da pilha
 		t.removeEscopo();
-		return Tipo.VOID;
+		return tipoRetorno;
 	}
 	
 	
