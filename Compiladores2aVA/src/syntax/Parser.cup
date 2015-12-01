@@ -353,7 +353,8 @@ resto_lista_exprs ::= resto_lista_exprs:resto VIRGULA expressao:exp
                     | /*vazio*/
                     ;
 
-expressao ::= expressao SOMA expressao
+expressao ::= expressao:esq SOMA:lex expressao:dir
+		{: RESULT = new ExpAritmetica(esq,dir,lex);:}
         | expressao:esq SUB:lex expressao:dir
         {: RESULT = new ExpAritmetica(esq,dir,lex);:}
         | expressao:esq MULT:lex expressao:dir

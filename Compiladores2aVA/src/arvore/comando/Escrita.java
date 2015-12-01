@@ -18,6 +18,7 @@ public class Escrita implements Comando {
 
 	@Override
 	public Object analyse() throws SemanticalException {
+		expressao.analyse();
 		return Tipo.VOID;
 	}
 	
