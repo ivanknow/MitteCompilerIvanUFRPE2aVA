@@ -1,10 +1,10 @@
 package test.unit;
 
+import static org.junit.Assert.fail;
+
 import java.io.ByteArrayInputStream;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import arvore.Programa;
 import semantica.SemanticalException;
@@ -12,38 +12,67 @@ import syntax.Lexer;
 import syntax.Parser;
 
 public class TestSemantico {
-	@Rule
-	public ExpectedException exception = ExpectedException.none();
-	
-	@Test (expected = SemanticalException.class)
-	public void testOpAritmeticaComString() throws Exception {// REGAR 1
+@Test
+	public void testOpAritmeticaComString() {// REGAR 1
 		StringBuilder sb = new StringBuilder();
-		/*
-		 * def main() 
-			{ 
-			   x, y : string; 
-			   m :int; 
-			   x = "oi";  
-			
-			print (x+m);
-			}
-		 * */
-		sb.append("def main()" );
+
+		sb.append("def main()");
 		sb.append("{ ");
 		sb.append(" x, y : string; ");
 		sb.append(" m :int; ");
-		sb.append(" x = \"oi\";"); 
+		sb.append(" x = \"oi\";");
 		sb.append(" print(x+m);");
+		sb.append(" print(m+m);");
+		sb.append(" print(m+x);");
 		sb.append("} ");
+
+		try {
+			Programa p = loadProgram(sb);
+			p.analyse();
+			fail("Nao detectou erro");
+		} catch (SemanticalException e) {
+
+			System.out.println(e.getMessage());
+		} catch (Exception e) {
+			fail("Excecao inesperada");
+			e.printStackTrace();
+		}
+
+	}
+
+@Test
+public void testOpAritmeticaDivMultComCHAR() {// REGAR 1
+	StringBuilder sb = new StringBuilder();
+
+	sb.append("def main()");
+	sb.append("{ ");
+	sb.append(" x: char; ");
+	sb.append(" m :int; ");
+	sb.append(" x='A';");
+	sb.append(" m=23; ");
+	sb.append(" print(x*m);");
+	sb.append("} ");
+
+	try {
+		Programa p = loadProgram(sb);
+		p.analyse();
+		fail("");
+	} catch (SemanticalException e) {
+
+		System.out.println(e.getMessage());
+	} catch (Exception e) {
+		fail("Excecao inesperada");
+		e.printStackTrace();
+	}
+
+}
+
+	public Programa loadProgram(StringBuilder sb) throws Exception {
 		String programa = sb.toString();
 		System.out.println(programa);
 		Lexer lexer = new Lexer(new ByteArrayInputStream(programa.getBytes()));
 		Parser parser = new Parser(lexer);
-		
-			Programa p = (Programa) parser.parse().value;
-			p.analyse();
-			
-
+		return (Programa) parser.parse().value;
 	}
 
 }
