@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import arvore.expressao.Identificador;
+import gerador.Geravel;
 import semantica.SemanticFunctionItem;
 import semantica.SemanticItem;
 import semantica.SemanticalException;
 import semantica.SemanticallyAnalyzable;
 import semantica.TabelaEscopo;
 
-public class Assinatura implements SemanticallyAnalyzable {
+public class Assinatura implements SemanticallyAnalyzable,Geravel {
 	Identificador identificador;
 	Tipo tipo = Tipo.VOID;
 	List<Identificador> parametros;
@@ -59,6 +60,12 @@ public class Assinatura implements SemanticallyAnalyzable {
 			tabela.addItem(i.getLabel(), new SemanticItem(i.getTipo()));
 		}
 		return tipo;
+	}
+
+	@Override
+	public String gerar(Object o) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

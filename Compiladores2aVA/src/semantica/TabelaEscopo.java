@@ -31,6 +31,10 @@ public class TabelaEscopo {
 	private Map<String, SemanticItem> getEscopoAtual() {
 		return pilhaEscopo.get(pilhaEscopo.size() - 1);
 	}
+	
+	public int getTamanhoEscopoAtual() {
+		return getEscopoAtual().size();
+	}
 
 	public static TabelaEscopo getInstance() {
 
