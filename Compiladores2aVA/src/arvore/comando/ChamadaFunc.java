@@ -54,4 +54,10 @@ public class ChamadaFunc implements Comando,Expressao {
 		return s.tipo;// retorno vem da tabela
 	}
 
+	@Override
+	public String gerar(Object o) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

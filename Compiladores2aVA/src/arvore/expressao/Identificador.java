@@ -3,10 +3,12 @@ package arvore.expressao;
 import arvore.Tipo;
 import semantica.SemanticalException;
 import semantica.TabelaEscopo;
+import test.GerarCodigo;
 
 public class Identificador implements Expressao {
 	private String label, escopo, retorno;
 	Tipo tipo;
+	private int idEscopo;
 
 	public Identificador(String label) {
 		this.label = label;
@@ -43,6 +45,15 @@ public class Identificador implements Expressao {
 	public void setTipo(Tipo tipo) {
 		this.tipo = tipo;
 	}
+	
+
+	public int getIdEscopo() {
+		return idEscopo;
+	}
+
+	public void setIdEscopo(int idEscopo) {
+		this.idEscopo = idEscopo;
+	}
 
 	@Override
 	public String toString() {
@@ -58,6 +69,13 @@ public class Identificador implements Expressao {
 			tipo = tabela.getType(label).tipo;
 		}
 			return this.tipo;
+	}
+
+	@Override
+	public String gerar(Object o) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(GerarCodigo.tradutorTipos(tipo, "load_"+(idEscopo-1))+"\n\n");
+		return sb.toString();
 	}
 
 	

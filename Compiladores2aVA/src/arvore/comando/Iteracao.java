@@ -26,6 +26,11 @@ public class Iteracao implements Comando {
 		;
 		return comando.analyse();
 	}
+	@Override
+	public String gerar(Object o) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 	

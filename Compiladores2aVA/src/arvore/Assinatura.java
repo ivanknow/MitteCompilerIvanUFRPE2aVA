@@ -57,7 +57,7 @@ public class Assinatura implements SemanticallyAnalyzable,Geravel {
 
 		for (Identificador i : parametros) {
 
-			tabela.addItem(i.getLabel(), new SemanticItem(i.getTipo()));
+			i.setIdEscopo(tabela.addItem(i.getLabel(), new SemanticItem(i.getTipo())));
 		}
 		return tipo;
 	}

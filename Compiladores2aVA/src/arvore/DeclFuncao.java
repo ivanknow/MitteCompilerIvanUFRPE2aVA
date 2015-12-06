@@ -1,6 +1,7 @@
 package arvore;
 
 import arvore.comando.Bloco;
+import arvore.comando.Comando;
 import arvore.expressao.Identificador;
 import semantica.SemanticalException;
 import semantica.SemanticallyAnalyzable;
@@ -64,7 +65,7 @@ public class DeclFuncao implements DeclGlobal,SemanticallyAnalyzable {
 						param[i] = GerarCodigo.tradutorTipos(assinatura.parametros.get(i).getTipo());
 						
 					}
-					sb.append(String.join(",",param));
+					sb.append(String.join("",param));
 					sb.append(")");
 					sb.append(GerarCodigo.tradutorTipos(assinatura.tipo));
 					sb.append("\n");
@@ -74,8 +75,9 @@ public class DeclFuncao implements DeclGlobal,SemanticallyAnalyzable {
 				sb.append(".limit stack "+countVariaveisEscopo );
 			//Assinatura
 			//bloco
+				sb.append(bloco.gerar(null));
 			//bloco
-			
+				sb.append("	.end method\n\n");
 		
 		return sb.toString();
 	}

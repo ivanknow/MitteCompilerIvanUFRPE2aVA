@@ -15,6 +15,9 @@ public class IntLiteral implements Expressao{
 	public Object analyse() throws SemanticalException {
 		return Tipo.INT;
 	}
-	
+	public String gerar(Object o) {
+		
+		return "bipush "+intLiteral+"\n" ;
+	}
 
 }

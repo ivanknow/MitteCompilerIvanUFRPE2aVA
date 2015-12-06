@@ -21,7 +21,7 @@ public class GerarCodigo {
 			retorno = "I";
 			break;
 		case BOOLEAN:
-			retorno = "B";
+			retorno = "Z";
 			break;
 		case CHAR:
 			retorno = "C";
@@ -47,7 +47,7 @@ public class GerarCodigo {
 			retorno = "i";
 			break;
 		case BOOLEAN:
-			retorno = "b";
+			retorno = "z";
 			break;
 		case CHAR:
 			retorno = "c";

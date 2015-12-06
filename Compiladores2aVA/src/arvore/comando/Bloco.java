@@ -39,4 +39,13 @@ public class Bloco implements Comando {
 		return retorno;
 	}
 
+	@Override
+	public String gerar(Object o) {
+		StringBuilder sb = new StringBuilder();
+		for(Comando c : getComandos()){
+			sb.append(c.gerar(null));
+		}
+		return sb.toString();
+	}
+
 }

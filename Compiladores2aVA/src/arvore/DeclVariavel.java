@@ -43,7 +43,7 @@ public class DeclVariavel implements DeclGlobal {
 		TabelaEscopo t = TabelaEscopo.getInstance();
 		for (Identificador i : ident) {
 
-			t.addItem(i.getLabel(), new SemanticItem(tipo));
+			i.setIdEscopo(t.addItem(i.getLabel(), new SemanticItem(tipo)));
 
 		}
 		return Tipo.VOID;
@@ -52,11 +52,7 @@ public class DeclVariavel implements DeclGlobal {
 	@Override
 	public String gerar(Object o) {
 		StringBuilder sb = new StringBuilder();
-
-		sb.append("getstatic java/lang/System/out Ljava/io/PrintStream;\n");
-		sb.append("ldc \"VARIAVEL\"\n");
-		sb.append("invokenonvirtual java/lang/Object/<init>()V\n\n");
-
+		
 		return sb.toString();
 	}
 

@@ -13,4 +13,9 @@ public class FloatLiteral implements Expressao {
 		
 		return Tipo.FLOAT;
 	}
+	
+	public String gerar(Object o) {
+		
+		return "bipush "+f+"\n" ;
+	}
 }

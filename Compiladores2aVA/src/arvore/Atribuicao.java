@@ -7,6 +7,7 @@ import arvore.expressao.Expressao;
 import arvore.expressao.Identificador;
 import semantica.SemanticalException;
 import semantica.TabelaEscopo;
+import test.GerarCodigo;
 
 public class Atribuicao implements Comando {
 	private List<Identificador> listaIdents;
@@ -35,6 +36,17 @@ public class Atribuicao implements Comando {
 		}
 		TabelaEscopo tabela = TabelaEscopo.getInstance();
 		return Tipo.VOID;
+	}
+
+	@Override
+	public String gerar(Object o) {
+		StringBuilder sb = new StringBuilder();
+		for (Identificador identificador : listaIdents) {
+			sb.append(identificador.gerar(null)+"\n");
+			sb.append(expressao.gerar(null)+"\n");
+			sb.append(GerarCodigo.tradutorTipos(identificador.getTipo(), "store_"+(identificador.getIdEscopo()-1))+"\n\n");
+		}
+		return sb.toString();
 	}
 
 }

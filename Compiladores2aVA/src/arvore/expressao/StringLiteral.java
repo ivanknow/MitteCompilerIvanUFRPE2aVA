@@ -18,4 +18,10 @@ public class StringLiteral implements Expressao {
 		return Tipo.STRING;
 	}
 
+	@Override
+	public String gerar(Object o) {
+		
+		return "ldc \""+stringLiteral+"\"";
+	}
+
 }

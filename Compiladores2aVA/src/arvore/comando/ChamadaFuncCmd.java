@@ -16,5 +16,11 @@ public class ChamadaFuncCmd implements Comando {
 		//TODO o call significa sem retorno?
 		return Tipo.VOID;
 	}
+
+	@Override
+	public String gerar(Object o) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

@@ -47,4 +47,10 @@ public class Decisao implements Comando {
 		return retorno;
 	}
 
+	@Override
+	public String gerar(Object o) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

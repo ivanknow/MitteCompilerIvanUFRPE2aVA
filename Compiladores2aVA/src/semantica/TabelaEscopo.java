@@ -18,7 +18,7 @@ public class TabelaEscopo {
 	private TabelaEscopo() {
 	}
 
-	public void addItem(String label, SemanticItem item) throws SemanticalException {
+	public int addItem(String label, SemanticItem item) throws SemanticalException {
 		Map<String, SemanticItem> escopo = getEscopoAtual();
 		if (escopo.containsKey(label)) {
 			throw new SemanticalException("Variavel '" + label + "' ja foi declarada nesse escopo");
@@ -26,6 +26,7 @@ public class TabelaEscopo {
 			escopo.put(label, item);
 		}
 		System.out.println(this);
+		return getTamanhoEscopoAtual();
 	}
 
 	private Map<String, SemanticItem> getEscopoAtual() {

@@ -12,4 +12,9 @@ public class CharLiteral implements Expressao {
 	public Object analyse() throws SemanticalException {
 		return Tipo.CHAR;
 	}
+	@Override
+	public String gerar(Object o) {
+	
+		return "bipush "+charLiteral+"\n" ;
+	}
 }
