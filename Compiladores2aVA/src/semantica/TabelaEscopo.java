@@ -23,10 +23,19 @@ public class TabelaEscopo {
 		if (escopo.containsKey(label)) {
 			throw new SemanticalException("Variavel '" + label + "' ja foi declarada nesse escopo");
 		} else {
+			item.idEscopo = getTamanhoEscopoAtual() + 1;
 			escopo.put(label, item);
 		}
 		System.out.println(this);
 		return getTamanhoEscopoAtual();
+	}
+	
+	public int getIdItem(String label) throws SemanticalException {
+		if (getEscopoAtual().containsKey(label)) {
+			return getEscopoAtual().get(label).idEscopo;
+		}
+		throw new SemanticalException("Variavel '" + label + "' não foi declarada ainda");
+
 	}
 
 	private Map<String, SemanticItem> getEscopoAtual() {

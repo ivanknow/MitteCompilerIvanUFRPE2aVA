@@ -1,12 +1,10 @@
 package arvore;
 
 import arvore.comando.Bloco;
-import arvore.comando.Comando;
-import arvore.expressao.Identificador;
+import gerador.GerarCodigo;
 import semantica.SemanticalException;
 import semantica.SemanticallyAnalyzable;
 import semantica.TabelaEscopo;
-import test.GerarCodigo;
 
 public class DeclFuncao implements DeclGlobal,SemanticallyAnalyzable {
 	private int countVariaveisEscopo = 0;
@@ -54,7 +52,7 @@ public class DeclFuncao implements DeclGlobal,SemanticallyAnalyzable {
 		assinatura.identificador.getLabel();
 		
 		//Assinatura
-		sb.append("method public static "
+		sb.append(".method public static "
 				+ assinatura.identificador.getLabel());
 				if(assinatura.identificador.getLabel().equals("main")){
 					sb.append("([Ljava/lang/String;)V \n");
@@ -71,8 +69,8 @@ public class DeclFuncao implements DeclGlobal,SemanticallyAnalyzable {
 					sb.append("\n");
 				}
 				
-				sb.append(".limit locals "+countVariaveisEscopo );
-				sb.append(".limit stack "+countVariaveisEscopo );
+				sb.append("\n.limit locals "+(countVariaveisEscopo+4)+"\n" );
+				sb.append("\n.limit stack "+(countVariaveisEscopo+4)+"\n" );
 			//Assinatura
 			//bloco
 				sb.append(bloco.gerar(null));

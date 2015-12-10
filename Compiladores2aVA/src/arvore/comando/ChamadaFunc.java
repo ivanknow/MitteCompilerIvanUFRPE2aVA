@@ -4,13 +4,15 @@ import java.util.List;
 
 import arvore.Tipo;
 import arvore.expressao.Expressao;
+import gerador.GerarCodigo;
 import semantica.SemanticFunctionItem;
 import semantica.SemanticalException;
 import semantica.TabelaEscopo;
 
-public class ChamadaFunc implements Comando,Expressao {
+public class ChamadaFunc implements Comando, Expressao {
 	private String nomeFuncao;
 	private List<Expressao> listaExprs;
+	Tipo t;
 
 	public ChamadaFunc(String nomeFuncao, List<Expressao> listaExprs) {
 		super();
@@ -36,8 +38,7 @@ public class ChamadaFunc implements Comando,Expressao {
 
 	@Override
 	public Object analyse() throws SemanticalException {
-		// TODO verifica se funcao existe
-		// verifica parametros
+
 
 		TabelaEscopo tabela = TabelaEscopo.getInstance();
 		SemanticFunctionItem s = (SemanticFunctionItem) tabela.getType(nomeFuncao);
@@ -50,14 +51,27 @@ public class ChamadaFunc implements Comando,Expressao {
 			}
 
 		}
-
+		this.t = s.tipo;
 		return s.tipo;// retorno vem da tabela
 	}
 
 	@Override
 	public String gerar(Object o) {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO invokestatic ExemploWhile/print()V
+		StringBuilder sb = new StringBuilder();
+		try {
+			sb.append("\ninvokestatic " + GerarCodigo.nome + "/" + nomeFuncao + "(");
+			for (Expressao e : listaExprs) {
+
+				sb.append(GerarCodigo.tradutorTipos((Tipo) e.analyse()));
+
+			}
+		} catch (SemanticalException e1) {
+			
+			e1.printStackTrace();
+		}
+		sb.append(")" + GerarCodigo.tradutorTipos(t));
+		return sb.toString();
 	}
 
 }

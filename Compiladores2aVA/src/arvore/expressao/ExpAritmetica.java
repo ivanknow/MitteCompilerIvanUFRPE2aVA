@@ -2,7 +2,6 @@ package arvore.expressao;
 
 import arvore.Tipo;
 import semantica.SemanticalException;
-import test.GerarCodigo;
 
 public class ExpAritmetica implements Expressao {
 
@@ -89,7 +88,7 @@ public class ExpAritmetica implements Expressao {
 			break;
 
 		}
-		return retorno.toString();
+		return retorno.toString()+"\n";
 	}
 
 }

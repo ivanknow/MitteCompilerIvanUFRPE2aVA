@@ -354,15 +354,15 @@ resto_lista_exprs ::= resto_lista_exprs:resto VIRGULA expressao:exp
                     ;
 
 expressao ::= expressao:esq SOMA:lex expressao:dir
-		{: RESULT = new ExpAritmetica(esq,dir,lex);:}
+		{: RESULT = new ExpAritmetica(esq,dir,"SOMA");:}
         | expressao:esq SUB:lex expressao:dir
-        {: RESULT = new ExpAritmetica(esq,dir,lex);:}
+        {: RESULT = new ExpAritmetica(esq,dir,"SUB");:}
         | expressao:esq MULT:lex expressao:dir
-        {: RESULT = new ExpAritmetica(esq,dir,lex);:}
+        {: RESULT = new ExpAritmetica(esq,dir,"MULT");:}
         | expressao:esq DIV:lex expressao:dir
-        {: RESULT = new ExpAritmetica(esq,dir,lex);:}
+        {: RESULT = new ExpAritmetica(esq,dir,"DIV");:}
         | expressao:esq RESTO:lex expressao:dir
-        {: RESULT = new ExpAritmetica(esq,dir,lex);:}
+        {: RESULT = new ExpAritmetica(esq,dir,"RESTO");:}
         | expressao:esq AND:lex expressao:dir
         {: RESULT = new ExpLogica(esq,dir,"AND");:}
         | expressao:esq OR:lex expressao:dir

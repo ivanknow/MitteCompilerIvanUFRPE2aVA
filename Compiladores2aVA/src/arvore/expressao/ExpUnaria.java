@@ -1,8 +1,8 @@
 package arvore.expressao;
 
 import arvore.Tipo;
+import gerador.GerarCodigo;
 import semantica.SemanticalException;
-import test.GerarCodigo;
 
 public class ExpUnaria implements Expressao {
 	private Expressao expr;

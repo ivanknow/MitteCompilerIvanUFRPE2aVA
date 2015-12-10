@@ -45,6 +45,11 @@ public class Bloco implements Comando {
 		for(Comando c : getComandos()){
 			sb.append(c.gerar(null));
 		}
+		
+		String s = sb.toString();
+		if(!s.contains("return")){
+			sb.append("\nreturn\n");
+		}
 		return sb.toString();
 	}
 

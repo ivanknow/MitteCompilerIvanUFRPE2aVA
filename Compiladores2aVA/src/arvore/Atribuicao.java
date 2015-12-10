@@ -5,9 +5,9 @@ import java.util.List;
 import arvore.comando.Comando;
 import arvore.expressao.Expressao;
 import arvore.expressao.Identificador;
+import gerador.GerarCodigo;
 import semantica.SemanticalException;
 import semantica.TabelaEscopo;
-import test.GerarCodigo;
 
 public class Atribuicao implements Comando {
 	private List<Identificador> listaIdents;
@@ -44,7 +44,7 @@ public class Atribuicao implements Comando {
 		for (Identificador identificador : listaIdents) {
 			sb.append(identificador.gerar(null)+"\n");
 			sb.append(expressao.gerar(null)+"\n");
-			sb.append(GerarCodigo.tradutorTipos(identificador.getTipo(), "store_"+(identificador.getIdEscopo()-1))+"\n\n");
+			sb.append(GerarCodigo.tradutorTipos(identificador.getTipo(), "store_"+(identificador.getIdEscopo()))+"\n\n");
 		}
 		return sb.toString();
 	}

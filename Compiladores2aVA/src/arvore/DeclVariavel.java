@@ -52,7 +52,11 @@ public class DeclVariavel implements DeclGlobal {
 	@Override
 	public String gerar(Object o) {
 		StringBuilder sb = new StringBuilder();
-		
+		for (Identificador identificador : ident) {
+			sb.append("bipush 0\n");
+			sb.append("istore_"+(identificador.getIdEscopo())+"\n");
+				
+		}
 		return sb.toString();
 	}
 

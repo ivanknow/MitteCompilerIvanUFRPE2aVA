@@ -1,4 +1,4 @@
-package test;
+package gerador;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -7,11 +7,17 @@ import arvore.Programa;
 import arvore.Tipo;
 
 public class GerarCodigo {
+	
+	public static String nome;
+	public static int labelCount = 0;
 	public static void gerar(String nome, Programa prog) throws FileNotFoundException {
+		GerarCodigo.nome = nome;
 		PrintWriter wow = new PrintWriter(nome + ".j");
 		String code = prog.gerar(nome);
 		wow.println(code);
 		wow.close();
+		
+		System.out.println("Geração de codigo realizada com sucesso!");
 	}
 
 	public static String tradutorTipos(Tipo t) {
@@ -62,5 +68,9 @@ public class GerarCodigo {
 		}
 
 		return retorno+op;
+	}
+	
+	public static int getLabelCount(){
+		return labelCount++;
 	}
 }

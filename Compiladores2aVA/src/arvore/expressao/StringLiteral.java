@@ -21,7 +21,7 @@ public class StringLiteral implements Expressao {
 	@Override
 	public String gerar(Object o) {
 		
-		return "ldc \""+stringLiteral+"\"";
+		return "\nldc "+stringLiteral+"\n";
 	}
 
 }

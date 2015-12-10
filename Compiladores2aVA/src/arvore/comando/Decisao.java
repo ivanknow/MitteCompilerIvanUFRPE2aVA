@@ -2,6 +2,7 @@ package arvore.comando;
 
 import arvore.Tipo;
 import arvore.expressao.Expressao;
+import gerador.GerarCodigo;
 import semantica.SemanticalException;
 
 public class Decisao implements Comando {
@@ -29,19 +30,19 @@ public class Decisao implements Comando {
 	@Override
 	public Object analyse() throws SemanticalException {
 		Tipo retorno = Tipo.VOID;
-		
+
 		Tipo tipoExp = (Tipo) expressao.analyse();
 		if (tipoExp != Tipo.BOOLEAN) {
 			throw new SemanticalException("Expressao deve ser BOOLEAN");
 		}
-		retorno =(Tipo) comandoIf.analyse();
+		retorno = (Tipo) comandoIf.analyse();
 		if (comandoElse != null) {
-			
-			Tipo tipoElse = (Tipo)comandoElse.analyse();
-			if(tipoElse != retorno){
+
+			Tipo tipoElse = (Tipo) comandoElse.analyse();
+			if (tipoElse != retorno) {
 				throw new SemanticalException("Blocos IF-ELSE devem posuir o mesmo tipo de retorno");
 			}
-			
+
 		}
 
 		return retorno;
@@ -49,8 +50,28 @@ public class Decisao implements Comando {
 
 	@Override
 	public String gerar(Object o) {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(expressao.gerar(null));
+		
+		int labelIdIf = GerarCodigo.getLabelCount();
+
+		sb.append("bipush 1\n"); // adiciona true na pilha
+
+		sb.append("ifne cmd" + labelIdIf + "\n");// se for diferente de true pula para else ou fim
+		
+		sb.append(comandoIf.gerar(null));// se é true executa bloco if
+		
+		sb.append("goto fim" + labelIdIf + "\n");// pula pro fim
+		
+		sb.append("cmd" + labelIdIf + ":\n");// label do else
+
+		if (comandoElse != null) { // se else n for nulo
+			sb.append(comandoElse.gerar(null)); //add comandos do else
+		}
+		sb.append("fim" + labelIdIf + ":\n");// fim
+		
+		return sb.toString();
 	}
 
 }

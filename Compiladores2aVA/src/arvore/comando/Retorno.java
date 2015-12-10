@@ -2,8 +2,8 @@ package arvore.comando;
 
 import arvore.Tipo;
 import arvore.expressao.Expressao;
+import gerador.GerarCodigo;
 import semantica.SemanticalException;
-import test.GerarCodigo;
 
 public class Retorno implements Comando {
 	private Expressao expressao;

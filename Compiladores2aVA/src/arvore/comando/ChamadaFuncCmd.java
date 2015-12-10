@@ -19,8 +19,12 @@ public class ChamadaFuncCmd implements Comando {
 
 	@Override
 	public String gerar(Object o) {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuilder sb = new StringBuilder();
+		String s = chamada.gerar(null);
+		sb.append(s);
+		if(!s.contains("return\n}"))
+		sb.append("\npop\n");//remover elemento indesejado da pilha
+		return sb.toString();
 	}
 	
 }

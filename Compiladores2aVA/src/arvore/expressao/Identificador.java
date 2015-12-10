@@ -1,9 +1,9 @@
 package arvore.expressao;
 
 import arvore.Tipo;
+import gerador.GerarCodigo;
 import semantica.SemanticalException;
 import semantica.TabelaEscopo;
-import test.GerarCodigo;
 
 public class Identificador implements Expressao {
 	private String label, escopo, retorno;
@@ -67,6 +67,7 @@ public class Identificador implements Expressao {
 		if(tipo==null){//caso seja uma utilizacao
 			TabelaEscopo tabela = TabelaEscopo.getInstance();
 			tipo = tabela.getType(label).tipo;
+			idEscopo = tabela.getIdItem(label);
 		}
 			return this.tipo;
 	}
@@ -74,7 +75,7 @@ public class Identificador implements Expressao {
 	@Override
 	public String gerar(Object o) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(GerarCodigo.tradutorTipos(tipo, "load_"+(idEscopo-1))+"\n\n");
+		sb.append(GerarCodigo.tradutorTipos(tipo, "load_"+(idEscopo))+"\n");
 		return sb.toString();
 	}
 

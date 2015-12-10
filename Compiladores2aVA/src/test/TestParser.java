@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import arvore.Programa;
+import gerador.GerarCodigo;
 import semantica.SemanticalException;
 import syntax.Lexer;
 import syntax.Parser;
@@ -40,8 +41,8 @@ public class TestParser {
 			Programa p = (Programa)parser.parse().value;
 			//System.out.println("\nSintaxe OK!\n"+p);
 			p.analyse();
-			//String nomeClasse = arquivo.replace(".mitte", "");
-			//GerarCodigo.gerar(nomeClasse, p);
+			String nomeClasse = arquivo.replace(".mitte", "");
+			GerarCodigo.gerar(nomeClasse, p);
 		
 		}catch (SemanticalException e) {
 			System.out.println("\nErro semantico!"+e.getMessage());
