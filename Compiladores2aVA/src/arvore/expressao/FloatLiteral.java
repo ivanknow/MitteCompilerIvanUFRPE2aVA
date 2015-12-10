@@ -16,6 +16,6 @@ public class FloatLiteral implements Expressao {
 	
 	public String gerar(Object o) {
 		
-		return "bipush "+f+"\n" ;
+		return "ldc "+f+"\n" ;
 	}
 }

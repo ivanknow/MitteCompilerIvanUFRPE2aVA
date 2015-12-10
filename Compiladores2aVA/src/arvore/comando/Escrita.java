@@ -29,8 +29,8 @@ public class Escrita implements Comando {
 		try {
 			Tipo tipoExp = (Tipo) expressao.analyse();
 			sb.append("getstatic java/lang/System/out Ljava/io/PrintStream;\n");
-			sb.append(expressao.gerar(null));
-			sb.append("invokevirtual java/io/PrintStream/println(" + GerarCodigo.tradutorTipos(tipoExp) + ")V");
+			sb.append(expressao.gerar(null)+"\n");
+			sb.append("invokevirtual java/io/PrintStream/println(" + GerarCodigo.tradutorTipos(tipoExp) + ")V\n");
 		} catch (SemanticalException e) {
 			e.printStackTrace();
 		}

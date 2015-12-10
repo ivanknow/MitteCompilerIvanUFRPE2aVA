@@ -42,7 +42,7 @@ public class Atribuicao implements Comando {
 	public String gerar(Object o) {
 		StringBuilder sb = new StringBuilder();
 		for (Identificador identificador : listaIdents) {
-			sb.append(identificador.gerar(null)+"\n");
+			//sb.append(identificador.gerar(null)+"\n");
 			sb.append(expressao.gerar(null)+"\n");
 			sb.append(GerarCodigo.tradutorTipos(identificador.getTipo(), "store_"+(identificador.getIdEscopo()))+"\n\n");
 		}

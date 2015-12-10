@@ -71,9 +71,9 @@ public class ExprRelacional implements Expressao {
 		retorno.append(expr.gerar(null));
 		retorno.append(expr2.gerar(null));
 		if (tipoE1 == Tipo.INT || tipoE1 == Tipo.CHAR) {
-			retorno.append("icpm");
+			retorno.append("icmp");
 		} else {
-			retorno.append("fcpm");
+			retorno.append("fcmp");
 		}
 		switch (operador) {
 		case "OP_IGUAL":
@@ -98,7 +98,7 @@ public class ExprRelacional implements Expressao {
 			break;
 
 		}
-		return retorno.toString();
+		return retorno.toString()+"\n";
 	}
 
 }
