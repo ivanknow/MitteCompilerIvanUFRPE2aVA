@@ -1,6 +1,7 @@
 package arvore.expressao;
 
 import arvore.Tipo;
+import gerador.GerarCodigo;
 import semantica.SemanticalException;
 
 public class ExprRelacional implements Expressao {
@@ -71,33 +72,79 @@ public class ExprRelacional implements Expressao {
 		retorno.append(expr.gerar(null));
 		retorno.append(expr2.gerar(null));
 		if (tipoE1 == Tipo.INT || tipoE1 == Tipo.CHAR) {
-			retorno.append("icmp");
+			retorno.append("if_icmp");
+			/*
+			 if_icmpne else
+			 bipush 1
+			 goto fim
+			 else:
+			 bipush 0
+			 fim:
+			 */
+			int label = GerarCodigo.getLabelCount();
+			switch (operador) {
+			case "OP_IGUAL":
+				retorno.append("ne");
+				break;
+			case "OP_DIFERENTE":
+				retorno.append("eq");
+				break;
+
+			case "OP_MAIOR_QUE":
+				retorno.append("le");
+				break;
+			case "OP_MENOR_QUE":
+				retorno.append("ge");
+				break;
+			case "OP_MAIOR_OU_IGUAL":
+				retorno.append("lt");
+				break;
+
+			case "OP_MENOR_OU_IGUAL":
+				retorno.append("gt");
+				break;
+
+			}
+			
+			retorno.append("else"+label+"\n");
+			retorno.append("bipush 1\n");
+			retorno.append("goto fim"+label+"\n");
+			retorno.append("else"+label+":\n");
+			retorno.append("bipush 0\n");
+			retorno.append("fim"+label+":\n");
+			
 		} else {
-			retorno.append("fcmp");
+			retorno.append("fcmpg");
+			//-1 0 1
+			//bipush 0
+			//if_icmpeq
+			switch (operador) {
+			case "OP_IGUAL":
+				retorno.append("bipush 0\n");
+				retorno.append("ne");
+				break;
+			case "OP_DIFERENTE":
+				retorno.append("eq");
+				break;
+
+			case "OP_MAIOR_QUE":
+				retorno.append("le");
+				break;
+			case "OP_MENOR_QUE":
+				retorno.append("ge");
+				break;
+			case "OP_MAIOR_OU_IGUAL":
+				retorno.append("lt");
+				break;
+
+			case "OP_MENOR_OU_IGUAL":
+				retorno.append("gt");
+				break;
+
+			}
+			
 		}
-		switch (operador) {
-		case "OP_IGUAL":
-			retorno.append("eq");
-			break;
-		case "OP_DIFERENTE":
-			retorno.append("ne");
-			break;
-
-		case "OP_MAIOR_QUE":
-			retorno.append("gt");
-			break;
-		case "OP_MENOR_QUE":
-			retorno.append("lt");
-			break;
-		case "OP_MAIOR_OU_IGUAL":
-			retorno.append("ge");
-			break;
-
-		case "OP_MENOR_OU_IGUAL":
-			retorno.append("le");
-			break;
-
-		}
+		
 		return retorno.toString()+"\n";
 	}
 
