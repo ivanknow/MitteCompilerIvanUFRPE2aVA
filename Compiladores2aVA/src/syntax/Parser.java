@@ -356,12 +356,12 @@ public class Parser extends java_cup.runtime.lr_parser {
 			  cur_token.left, cur_token.right, cur_token.sym);
 			  System.out.println(cur_token.value);
   }
-  public void unrecovered_syntax_error(Symbol cur_token) throws Exception {
+  public void unrecovered_syntax_error(Symbol cur_token) throws ParserException {
 	  done_parsing();
 	  String msg = "Erro de sintaxe na linha " + cur_token.left + ", coluna " + cur_token.right 
 			  + " (token tipo " + cur_token.sym + " inesperado).";
 			  System.out.println(cur_token.value);
-	  throw new Exception(msg);
+	  throw new ParserException(msg);
   }
 
 

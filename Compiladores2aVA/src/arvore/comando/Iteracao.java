@@ -44,7 +44,7 @@ StringBuilder sb = new StringBuilder();
 		
 		sb.append(comando.gerar(null));
 		
-		sb.append("goto loop" + labelId + ":\n");
+		sb.append("goto loop" + labelId + "\n");
 
 		
 		sb.append("fim" + labelId + ":\n");
