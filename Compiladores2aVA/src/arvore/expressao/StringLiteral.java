@@ -24,4 +24,15 @@ public class StringLiteral implements Expressao {
 		return "\nldc "+stringLiteral+"\n";
 	}
 
+	@Override
+	public Tipo getTipo() {
+		return Tipo.STRING;
+	}
+
+	@Override
+	public void setTipo(Tipo t) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -12,24 +12,37 @@ return
 .limit locals 5
 
 .limit stack 5
-ldc 4.0
+bipush 0
 
-fstore_1
+istore_0
 
+loop0:
+iload_0
+bipush 10
+if_icmpge else1
+bipush 1
+goto fim1
+else1:
+bipush 0
+fim1:
+
+bipush 1
+if_icmpne fim0
 getstatic java/lang/System/out Ljava/io/PrintStream;
-ldc 2.0
-fload_1
-fadd
 
-invokevirtual java/io/PrintStream/println(F)V
-getstatic java/lang/System/out Ljava/io/PrintStream;
-fload_1
-ldc 3.3
-fcmpgt
+ldc "HA"
 
-invokevirtual java/io/PrintStream/println(Z)V
+invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+iload_0
+bipush 1
+iadd
+
+istore_0
+
+goto loop0:
+fim0:
 
 return
-	.end method
+.end method
 
 

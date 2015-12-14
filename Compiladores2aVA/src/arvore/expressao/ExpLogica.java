@@ -47,5 +47,19 @@ public class ExpLogica implements Expressao {
 		}
 		return sb.toString();
 	}
+
+
+	@Override
+	public Tipo getTipo() {
+	
+		return Tipo.BOOLEAN;
+	}
+
+
+	@Override
+	public void setTipo(Tipo t) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

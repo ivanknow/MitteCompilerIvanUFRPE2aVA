@@ -59,19 +59,31 @@ public class ChamadaFunc implements Comando, Expressao {
 	public String gerar(Object o) {
 		// TODO invokestatic ExemploWhile/print()V
 		StringBuilder sb = new StringBuilder();
-		try {
-			sb.append("\ninvokestatic " + GerarCodigo.nome + "/" + nomeFuncao + "(");
-			for (Expressao e : listaExprs) {
-
-				sb.append(GerarCodigo.tradutorTipos((Tipo) e.analyse()));
-
-			}
-		} catch (SemanticalException e1) {
+		for (Expressao e : listaExprs) {
 			
-			e1.printStackTrace();
+			sb.append(e.gerar(null));
+			
+		}
+		sb.append("\ninvokestatic " + GerarCodigo.nome + "/" + nomeFuncao + "(");
+		for (Expressao e : listaExprs) {
+
+			sb.append(GerarCodigo.tradutorTipos((Tipo) e.getTipo()));
+
 		}
 		sb.append(")" + GerarCodigo.tradutorTipos(t));
 		return sb.toString();
+	}
+
+	@Override
+	public Tipo getTipo() {
+		
+		return t;
+	}
+
+	@Override
+	public void setTipo(Tipo t) {
+		this.t = t;
+		
 	}
 
 }

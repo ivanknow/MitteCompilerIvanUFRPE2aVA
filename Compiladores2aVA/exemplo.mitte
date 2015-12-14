@@ -1,12 +1,10 @@
 def main() 
 { 
-x:float;
-x=4.0;
-print (2.0+x);
-
-
-	print(x>3.3);
-
+x:int;
+x=0;
+while(x<10){
+print("HA");
+x=x+1;
 }
- 
- 
+
+} 

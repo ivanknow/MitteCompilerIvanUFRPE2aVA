@@ -1,0 +1,213 @@
+package syntax;
+
+import java_cup.runtime.*;
+import java.util.*;
+import arvore.*;
+import arvore.expressao.*;
+import arvore.comando.*;
+
+
+/*****  Terminais (tokens) *****/
+
+terminal String IDENTIFICADOR;
+    
+terminal Object    OP_IGUAL;
+terminal Object    OP_DIFERENTE;
+terminal Object    OP_MAIOR_QUE;
+terminal Object    OP_MENOR_QUE;
+terminal Object    OP_MAIOR_OU_IGUAL;
+terminal Object    OP_MENOR_OU_IGUAL;
+    
+terminal Object    SOMA;
+terminal Object    SUB;
+terminal Object    MULT;
+terminal Object    DIV;
+terminal Object    RESTO;
+terminal Object    AND;
+terminal Object    OR;
+terminal Object    NOT;
+    
+terminal Object    ATRIBUICAO;
+    
+terminal Object    ABRE_PAR;
+terminal Object    FECHA_PAR;
+terminal Object    ABRE_CHAVE;
+terminal Object    FECHA_CHAVE;
+terminal Object    VIRGULA;
+terminal Object    PONTO_VIRGULA;
+terminal Object    DOIS_PONTOS;
+    
+terminal String    INT_LITERAL;
+terminal String    FLOAT_LITERAL;
+terminal String    CHAR_LITERAL;
+terminal String    STRING_LITERAL;
+    
+terminal Object    KEY_IF;
+terminal Object    KEY_ELSE;
+terminal Object    KEY_WHILE;
+terminal Object    KEY_RETURN;
+terminal Object    KEY_INT;
+terminal Object    KEY_FLOAT;
+terminal Object    KEY_CHAR;
+terminal Object    KEY_STRING;
+terminal Object    KEY_CALL;
+terminal Object    KEY_DEF;
+terminal Object    KEY_PRINT;
+
+
+/***** Nao-terminais *****/
+
+non terminal 		program;
+non terminal 		decl_global;
+non terminal 		decl_variavel;
+non terminal 		lista_idents;
+non terminal 		resto_lista_idents;
+non terminal 		tipo;
+non terminal 		decl_funcao;
+non terminal 		assinatura;
+non terminal 		param_formais;
+non terminal 		resto_param_formais;
+non terminal 		bloco;
+non terminal 		lista_comandos;
+non terminal Comando comando;
+non terminal 		atribuicao;
+non terminal 		iteracao;
+non terminal Decisao decisao;
+non terminal 		escrita;
+non terminal 		chamada_func_cmd;
+non terminal 		retorno;
+non terminal 		chamada_func;
+non terminal		lista_exprs;
+non terminal 		resto_lista_exprs;
+non terminal Expressao expressao;
+non terminal Expressao expr_basica;
+
+
+
+/***** Precedencia e associatividade *****/
+
+precedence left OR, AND; //simbolos de menor precedencia
+precedence left OP_IGUAL, OP_DIFERENTE, OP_MAIOR_QUE, OP_MENOR_QUE, OP_MAIOR_OU_IGUAL, OP_MENOR_OU_IGUAL;
+precedence left SOMA, SUB;     
+precedence left MULT, DIV, RESTO;   
+precedence left NOT;     //simbolo de maior precedencia
+
+/***** A gramática *****/
+
+program ::= program decl_global 
+          | /*vazio*/ 
+          ;
+
+decl_global ::= decl_variavel
+            | decl_funcao
+            ;
+            
+decl_variavel ::= lista_idents DOIS_PONTOS tipo PONTO_VIRGULA
+               ;
+               
+lista_idents ::= IDENTIFICADOR resto_lista_idents  
+             ;
+
+resto_lista_idents ::=  VIRGULA IDENTIFICADOR resto_lista_idents
+                     |  /* vazio */
+                     ;
+
+tipo ::= KEY_INT | KEY_CHAR | KEY_FLOAT | KEY_STRING ;
+
+decl_funcao ::= assinatura bloco ;
+
+assinatura ::= KEY_DEF IDENTIFICADOR ABRE_PAR param_formais FECHA_PAR DOIS_PONTOS tipo
+             | KEY_DEF IDENTIFICADOR ABRE_PAR param_formais FECHA_PAR
+             ;
+
+param_formais ::= IDENTIFICADOR DOIS_PONTOS tipo resto_param_formais 
+                | /*vazio*/ 
+                ;
+                  
+resto_param_formais ::= VIRGULA IDENTIFICADOR DOIS_PONTOS tipo resto_param_formais
+                      | /*vazio*/
+                      ; 
+
+bloco ::= ABRE_CHAVE lista_comandos FECHA_CHAVE ;
+
+lista_comandos ::= lista_comandos comando
+                 ;
+
+comando  ::= decl_variavel
+           | atribuicao
+           | iteracao           
+           | decisao:d 
+             {: RESULT = d; :}
+           | escrita
+           | retorno
+           | bloco
+           | chamada_func_cmd
+           ;
+
+atribuicao ::= lista_idents ATRIBUICAO expressao PONTO_VIRGULA ;
+
+iteracao ::= KEY_WHILE ABRE_PAR expressao FECHA_PAR comando ;
+
+decisao ::= KEY_IF ABRE_PAR expressao:exp FECHA_PAR comando:cmdif KEY_ELSE comando:cmdelse
+			{: RESULT = new Decisao(exp, cmdif, cmdelse);  :}
+
+            | KEY_IF ABRE_PAR expressao:exp FECHA_PAR comando:cmd
+            {: RESULT = new Decisao(exp, cmd);  :}
+            
+            ;
+
+escrita ::= KEY_PRINT ABRE_PAR expressao FECHA_PAR PONTO_VIRGULA ;
+
+chamada_func_cmd ::= KEY_CALL chamada_func PONTO_VIRGULA ;
+
+retorno ::= KEY_RETURN expressao PONTO_VIRGULA ;
+
+chamada_func ::= IDENTIFICADOR ABRE_PAR lista_exprs FECHA_PAR ;
+
+lista_exprs ::= expressao resto_lista_exprs
+              | /*vazio*/
+              ; 
+
+resto_lista_exprs ::= resto_lista_exprs VIRGULA expressao
+                    | /*vazio*/
+                    ;
+
+expressao ::= expressao SOMA expressao
+        
+        | expressao:esq SUB expressao:dir
+        {: RESULT = new ExpAritmetica(esq, dir, "-");  :}
+        
+        | expressao MULT expressao
+        | expressao DIV expressao
+        | expressao RESTO expressao
+        | expressao AND expressao
+        | expressao OR expressao
+        | expressao OP_IGUAL expressao
+        | expressao OP_DIFERENTE expressao
+        | expressao OP_MENOR_QUE expressao
+        | expressao OP_MENOR_OU_IGUAL expressao
+        | expressao OP_MAIOR_OU_IGUAL expressao
+        | expressao OP_MAIOR_QUE expressao
+        
+        | expr_basica:exp
+        {:  RESULT = exp;  :}
+        ;
+
+expr_basica ::= ABRE_PAR expressao FECHA_PAR 
+         | NOT expr_basica
+         | SUB expr_basica
+         
+         | INT_LITERAL:lex
+         {:  int valor = Integer.parseInt(lex); 
+             RESULT = new IntLiteral(valor);    :}
+         
+         | CHAR_LITERAL
+         | FLOAT_LITERAL
+         
+         | STRING_LITERAL:lex
+         {: RESULT = new StringLiteral(lex);   :}
+         
+         | IDENTIFICADOR
+         | chamada_func
+         ;
+

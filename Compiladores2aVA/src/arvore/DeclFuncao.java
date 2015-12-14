@@ -74,8 +74,14 @@ public class DeclFuncao implements DeclGlobal,SemanticallyAnalyzable {
 			//Assinatura
 			//bloco
 				sb.append(bloco.gerar(null));
+				
+				String s = sb.toString();
+				if(!s.contains("return")){
+					sb.append("\nreturn\n");
+				}
+
 			//bloco
-				sb.append("	.end method\n\n");
+				sb.append(".end method\n\n");
 		
 		return sb.toString();
 	}

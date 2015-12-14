@@ -17,4 +17,14 @@ public class CharLiteral implements Expressao {
 	
 		return "bipush "+charLiteral+"\n" ;
 	}
+	@Override
+	public Tipo getTipo() {
+	
+		return Tipo.CHAR;
+	}
+	@Override
+	public void setTipo(Tipo t) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -47,4 +47,16 @@ public class ExpUnaria implements Expressao {
 		return sb.toString();
 	}
 
+	@Override
+	public Tipo getTipo() {
+		
+		return tipoexp;
+	}
+
+	@Override
+	public void setTipo(Tipo t) {
+		tipoexp = t;
+		
+	}
+
 }

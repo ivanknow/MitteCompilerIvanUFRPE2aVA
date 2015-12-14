@@ -18,4 +18,14 @@ public class FloatLiteral implements Expressao {
 		
 		return "ldc "+f+"\n" ;
 	}
+	@Override
+	public Tipo getTipo() {
+
+		return Tipo.FLOAT;
+	}
+	@Override
+	public void setTipo(Tipo t) {
+		// TODO Auto-generated method stub
+		
+	}
 }

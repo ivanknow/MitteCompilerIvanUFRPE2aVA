@@ -20,4 +20,15 @@ public class IntLiteral implements Expressao{
 		return "bipush "+intLiteral+"\n" ;
 	}
 
+	@Override
+	public Tipo getTipo() {
+		return Tipo.INT;
+	}
+
+	@Override
+	public void setTipo(Tipo t) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

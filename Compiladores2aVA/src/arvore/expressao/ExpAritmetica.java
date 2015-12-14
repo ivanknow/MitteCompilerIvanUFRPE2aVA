@@ -10,6 +10,7 @@ public class ExpAritmetica implements Expressao {
 	private String operacao;
 	Tipo tipoE1;
 	Tipo tipoE2;
+	Tipo retorno;
 
 	public ExpAritmetica(Expressao exp1, Expressao exp2, String operacao) {
 		this.exp1 = exp1;
@@ -29,6 +30,7 @@ public class ExpAritmetica implements Expressao {
 
 		switch (tipoE1) {
 		case CHAR:
+			retorno = Tipo.CHAR;
 			if (!(operacao == "SOMA" || operacao == "SUB")) {
 				// se for diferente de soma ou sub
 				String msg = "Tipo CHAR só é permitido em operações de soma ou subitração";
@@ -41,12 +43,14 @@ public class ExpAritmetica implements Expressao {
 			}
 			break;
 		case INT:
+			retorno = Tipo.INT;
 			if (tipoE2 != Tipo.INT) {
 				String msg = "Tipo INT só permite operações com Tipos INT";
 				throw new SemanticalException(msg);
 			}
 			break;
 		case FLOAT:
+			retorno = Tipo.FLOAT;
 			if (tipoE2 != Tipo.FLOAT) {
 				String msg = "Tipo FLOAT só permite operações com Tipos FLOAT";
 				throw new SemanticalException(msg);
@@ -89,6 +93,18 @@ public class ExpAritmetica implements Expressao {
 
 		}
 		return retorno.toString()+"\n";
+	}
+
+	@Override
+	public Tipo getTipo() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setTipo(Tipo t) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

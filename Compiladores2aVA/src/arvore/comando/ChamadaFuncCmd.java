@@ -13,7 +13,7 @@ public class ChamadaFuncCmd implements Comando {
 
 	@Override
 	public Object analyse() throws SemanticalException {
-		//TODO o call significa sem retorno?
+		chamada.analyse();
 		return Tipo.VOID;
 	}
 
@@ -22,8 +22,8 @@ public class ChamadaFuncCmd implements Comando {
 		StringBuilder sb = new StringBuilder();
 		String s = chamada.gerar(null);
 		sb.append(s);
-		if(!s.contains("return\n}"))
-		sb.append("\npop\n");//remover elemento indesejado da pilha
+		//if(!s.contains("return\n}"))
+		//sb.append("\npop\n");//remover elemento indesejado da pilha
 		return sb.toString();
 	}
 	

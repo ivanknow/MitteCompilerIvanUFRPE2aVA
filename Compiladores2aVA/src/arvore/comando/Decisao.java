@@ -58,7 +58,7 @@ public class Decisao implements Comando {
 
 		sb.append("bipush 1\n"); // adiciona true na pilha
 
-		sb.append("ifne cmd" + labelIdIf + "\n");// se for diferente de true pula para else ou fim
+		sb.append("if_icmpne cmd" + labelIdIf + "\n");// se for diferente de true pula para else ou fim
 		
 		sb.append(comandoIf.gerar(null));// se é true executa bloco if
 		

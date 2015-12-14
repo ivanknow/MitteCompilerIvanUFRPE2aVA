@@ -11,6 +11,7 @@ public class ExprRelacional implements Expressao {
 	private String operador;
 	Tipo tipoE1;
 	Tipo tipoE2;
+	Tipo retorno;
 
 	public ExprRelacional(Expressao expr, Expressao expr2, String operador) {
 		this.expr = expr;
@@ -34,6 +35,7 @@ public class ExprRelacional implements Expressao {
 		 */
 		switch (tipoE1) {
 		case CHAR:
+			retorno = Tipo.CHAR;
 			if (!(operador == "OP_IGUAL" || operador == "OP_DIFERENTE")) {
 
 				String msg = "Tipo CHAR só é permitido em operações relacionais de igualdade";
@@ -48,12 +50,14 @@ public class ExprRelacional implements Expressao {
 			}
 			break;
 		case INT:
+			retorno = Tipo.INT;
 			if (tipoE2 != Tipo.INT) {
 				String msg = "Tipo INT só permite operações relacionais com Tipo INT";
 				throw new SemanticalException(msg);
 			}
 			break;
 		case FLOAT:
+			retorno = Tipo.FLOAT;
 			if (tipoE2 != Tipo.FLOAT) {
 				String msg = "Tipo FLOAT só permite operações relacionais com Tipos FLOAT";
 				throw new SemanticalException(msg);
@@ -106,7 +110,7 @@ public class ExprRelacional implements Expressao {
 
 			}
 			
-			retorno.append("else"+label+"\n");
+			retorno.append(" else"+label+"\n");
 			retorno.append("bipush 1\n");
 			retorno.append("goto fim"+label+"\n");
 			retorno.append("else"+label+":\n");
@@ -121,7 +125,7 @@ public class ExprRelacional implements Expressao {
 			switch (operador) {
 			case "OP_IGUAL":
 				retorno.append("bipush 0\n");
-				retorno.append("ne");
+				
 				break;
 			case "OP_DIFERENTE":
 				retorno.append("eq");
@@ -146,6 +150,18 @@ public class ExprRelacional implements Expressao {
 		}
 		
 		return retorno.toString()+"\n";
+	}
+
+	@Override
+	public Tipo getTipo() {
+		
+		return retorno;
+	}
+
+	@Override
+	public void setTipo(Tipo t) {
+		retorno = t;
+		
 	}
 
 }

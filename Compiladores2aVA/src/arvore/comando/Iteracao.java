@@ -40,7 +40,7 @@ StringBuilder sb = new StringBuilder();
 		
 		sb.append("bipush 1\n"); 
 
-		sb.append("ifne fim" + labelId + "\n");
+		sb.append("if_icmpne fim" + labelId + "\n");
 		
 		sb.append(comando.gerar(null));
 		

@@ -27,14 +27,10 @@ public class TestParser {
 	public static void main(String args[]) throws IOException {
 		Lexer lexer;
 		Parser parser;
-		
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-
-        System.out.print("Digite o nome do arquivo: ");
-        String arquivo = in.readLine();
-        System.out.println();
+	
 		
 		try {
+			String arquivo =  args[0];
 			lexer = new Lexer(new FileInputStream(arquivo));
 			parser = new Parser(lexer);
 

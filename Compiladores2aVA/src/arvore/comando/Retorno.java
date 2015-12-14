@@ -30,8 +30,10 @@ public class Retorno implements Comando {
 		try {
 			Tipo t = (Tipo) expressao.analyse();
 			if (t != Tipo.VOID) {
+				sb.append(expressao.gerar(null));
 				sb.append(GerarCodigo.tradutorTipos(t,"return"));
 			}
+			
 			sb.append("\n");
 		} catch (SemanticalException e) {
 
