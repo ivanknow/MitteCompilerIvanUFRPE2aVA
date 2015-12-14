@@ -1,2 +1,3 @@
 eclipse.preferences.version=1
 encoding//src/syntax/Parser.cup=UTF-8
+encoding//src/test/unit/TestSemantico.java=UTF-8
