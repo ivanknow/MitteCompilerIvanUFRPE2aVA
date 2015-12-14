@@ -26,7 +26,7 @@ public class TabelaEscopo {
 			item.idEscopo = getTamanhoEscopoAtual();
 			escopo.put(label, item);
 		}
-		System.out.println(this);
+		//System.out.println(this);
 		return getTamanhoEscopoAtual()-1;
 	}
 	
@@ -77,13 +77,13 @@ public class TabelaEscopo {
 			pilhaEscopo.remove(1);
 		}
 		pilhaEscopo.add(new HashMap<String, SemanticItem>());
-		System.out.println(this);
+		//System.out.println(this);
 	}
 
 	public void removeEscopo() {
 		if (pilhaEscopo.size() > 1)
 			instance.pilhaEscopo.remove(1);
-		System.out.println(this);
+		//System.out.println(this);
 	}
 
 	private static synchronized void inicializaInstancia() {
