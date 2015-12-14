@@ -1,4 +1,4 @@
-.class public exemplo
+.class public while
 .super java/lang/Object 
 
 .method public <init>()V
@@ -16,12 +16,30 @@ bipush 0
 
 istore_0
 
+loop0:
+iload_0
+bipush 10
+if_icmpge else1
+bipush 1
+goto fim1
+else1:
+bipush 0
+fim1:
+
+bipush 1
+if_icmpne fim0
 getstatic java/lang/System/out Ljava/io/PrintStream;
 iload_0
-iload_1
-iadd
 
 invokevirtual java/io/PrintStream/println(I)V
+iload_0
+bipush 1
+iadd
+
+istore_0
+
+goto loop0
+fim0:
 
 return
 .end method

@@ -1,11 +1,8 @@
 def main() 
 { 
 x:int;
+y:string;
 x=0;
-while(x<10){
-print("HA");
-print(x);
-x=x+1;
-}
 
+print(x+y);
 } 

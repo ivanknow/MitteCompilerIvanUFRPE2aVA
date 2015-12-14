@@ -33,7 +33,7 @@ public class TestParser {
 			Programa p = (Programa) parser.parse().value;
 			// System.out.println("\nSintaxe OK!\n"+p);
 			p.analyse();
-			String nomeClasse = arquivo.replace(".mitte", "");
+			String nomeClasse = arquivo.replace(".mtt", "");
 			GerarCodigo.gerar(nomeClasse, p);
 
 		} catch (SemanticalException e) {

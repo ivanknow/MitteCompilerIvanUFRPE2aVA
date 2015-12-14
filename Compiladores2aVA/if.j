@@ -1,4 +1,4 @@
-.class public exemplo
+.class public dev\workspace\mittecompiler2ava\Compiladores2aVA\if
 .super java/lang/Object 
 
 .method public <init>()V
@@ -13,6 +13,10 @@ return
 
 .limit stack 5
 bipush 0
+
+istore_0
+
+bipush 67
 
 istore_0
 
